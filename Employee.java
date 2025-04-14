@@ -1,10 +1,10 @@
 import java.util.Date;
 
 public class Employee implements Comparable<Employee>{
+    private int id;
     private String name;
     private String lastname;
     private Date hireDate;
-    private int id;
     private float salary;
     
     public Employee(){
@@ -15,12 +15,23 @@ public class Employee implements Comparable<Employee>{
         salary = 800.0f;
     }
 
-    public Employee(String n, String ln, Date hd, int i, float s){
+    public Employee(int i, String n, String ln, Date hd, float s){
+        setId(i);
         setName(n);
         setLastname(ln);
         setHireDate(hd);
-        setId(i);
         setSalary(s);
+    }
+
+    public void setId(int i){
+        if(id > 0 && id < 1000000)
+            id = i;
+        else
+            throw new IllegalArgumentException("Invalid ID!");
+    }
+
+    public int getId(){
+        return id;
     }
 
     public void setName(String n){
@@ -57,17 +68,6 @@ public class Employee implements Comparable<Employee>{
         return hireDate;
     }
 
-    public void setId(int i){
-        if(id > 0 && id < 1000000)
-            id = i;
-        else
-            throw new IllegalArgumentException("Invalid ID!");
-    }
-
-    public int getId(){
-        return id;
-    }
-
     public void setSalary(float s){
         if(salary >= 800 && salary <= 3500)
             salary = s;
@@ -81,9 +81,9 @@ public class Employee implements Comparable<Employee>{
 
     @Override
     public String toString(){
-        return "[Name: " + getName() + ", " +
-               "Lastname: " + getLastname() + ", " +
-               "ID: " + getId() + ", " +
+        return "[ID: " + getId() + ", " +
+               "Name: " + getName() + ", " +
+               "Lastname: " + getLastname() + ", " +               
                "Salary: " + getSalary() + "]";
     }
 

@@ -4,8 +4,8 @@ public class Manager extends Employee {
     private String title;
     private final float commission = 0.05f;
 
-    public Manager(String n, String ln, Date hd, int i, float s, String t){
-        super(n, ln, hd, i , s);
+    public Manager(int i, String n, String ln, Date hd, float s, String t){
+        super(i, n, ln, hd, s);
         setTitle(t);
     }
 
