@@ -2,7 +2,7 @@ import java.util.Date;
 
 public class Manager extends Employee {
     private String educationLevel;
-    private final float commission = 0.05f;
+    private final float commissionRate = 0.05f;
 
     public Manager(int i, String n, String ln, Date hd, float s, String el){
         super(i, n, ln, hd, s);
@@ -13,11 +13,15 @@ public class Manager extends Employee {
         if(el != null)
         educationLevel = el;
         else
-            throw new IllegalArgumentException("Invalid Title!");
+            throw new IllegalArgumentException("Invalid Education Level!");
     }
 
     public String getEducationLevel(){
         return educationLevel;
+    }
+
+    public float getCommission(){
+        return Math.round(getSalary() * commissionRate * 100) / 100f;
     }
 
     @Override 
@@ -28,10 +32,8 @@ public class Manager extends Employee {
 
     @Override
     public int compareTo(Employee right){
-        float totalPayment = getSalary() 
-                             + getSalary() * commission ;
-        float rightTotalPayment = right.getSalary() 
-                                  + right.getSalary() * commission;
+        float totalPayment = getSalary() + getCommission(); ;
+        float rightTotalPayment = right.getSalary() + ((Manager)right).getCommission();
 
         if(totalPayment > rightTotalPayment)
             return 1;
