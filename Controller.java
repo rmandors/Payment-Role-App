@@ -98,14 +98,14 @@ public class Controller {
 
     @FXML
     void export(ActionEvent event){
-        writeCSV("employeesData2.csv");
+        exportCSV("employeesData2.csv");
     }
 
     public void initialize(){
         typeComboBox.getItems().addAll(items);
         typeComboBox.setValue("Employee");
 
-        readCSV("employeesData.csv");
+        importCSV("employeesData.csv");
         regListView.setItems(employees);
 
         // Update text fields when selecting an employee
@@ -121,10 +121,12 @@ public class Controller {
                   salaryField.setText(String.valueOf(newValue.getSalary()));  
                   
                   if(newValue.getClass() == Manager.class){
+                      typeComboBox.setValue("Manager");
                       titleField.setText(((Manager)newValue).getEducationLevel());
                       comissionField.setText(String.valueOf(((Manager)newValue).getCommission()));
                   }
                   else{
+                      typeComboBox.setValue("Employee");
                       titleField.setText("none");
                       comissionField.setText("0");
                   }
@@ -145,7 +147,7 @@ public class Controller {
     }
 
     // Reads the Employee data from a CSV file and load it into an ObservableList
-    private static void readCSV(String fileName){
+    private static void importCSV(String fileName){
         try(BufferedReader reader = new BufferedReader(new FileReader(fileName))){
             String line;
 
@@ -181,7 +183,7 @@ public class Controller {
     }
 
     // Writes the Employee ObservableList to a CSV file using Formatter
-    private static void writeCSV(String fileName){
+    private static void exportCSV(String fileName){
         try(Formatter output = new Formatter(new File(fileName))){
             output.format("id,name,lastname,hireDate,salary,educationLevel%n");
 
@@ -211,6 +213,11 @@ public class Controller {
         employees.sort((e1, e2) -> e1.getHireDate().compareTo(e2.getHireDate()));
     }
 
+    private static void exportXML(String fileName){
+    }
+
+    private static void exportJSON(String fileName){
+    }
 }
 
 
