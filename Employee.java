@@ -1,5 +1,6 @@
 import java.util.Date;
 
+@SuppressWarnings("deprecation")
 public class Employee implements Comparable<Employee>{
     private int id;
     private String name;
@@ -8,11 +9,11 @@ public class Employee implements Comparable<Employee>{
     private float salary;
     
     public Employee(){
-        name = "Unknown";
-        lastname = "Unknown";
-        hireDate = new Date();
-        id = 0;
-        salary = 800.0f;
+        //id = 1;
+        //name = "Unknown";
+        //lastname = "Unknown";
+        //hireDate = new Date();
+        //salary = 800.0f;
     }
 
     public Employee(int i, String n, String ln, Date hd, float s){
@@ -24,7 +25,7 @@ public class Employee implements Comparable<Employee>{
     }
 
     public void setId(int i){
-        if(i > 0 && i < 1000000)
+        if(i > 0 && i < 10000)
             id = i;
         else
             throw new IllegalArgumentException("Invalid ID!");
@@ -56,7 +57,6 @@ public class Employee implements Comparable<Employee>{
         return lastname;
     }
 
-    @SuppressWarnings("deprecation")
     public void setHireDate(Date hd){
         if(hd.getYear() > 1900)
             hireDate = hd;
@@ -64,10 +64,9 @@ public class Employee implements Comparable<Employee>{
             throw new IllegalArgumentException("Invalid Hire Date!");
     }
 
-    @SuppressWarnings("deprecation")
     public String getHireDate(){
         return hireDate.getYear() + "-" +
-               hireDate.getMonth() + "-" +
+               (hireDate.getMonth() + 1)+ "-" +
                hireDate.getDate();
     }
 
