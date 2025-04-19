@@ -1,29 +1,29 @@
 import java.util.Date;
 
 public class Manager extends Employee {
-    private String title;
+    private String educationLevel;
     private final float commission = 0.05f;
 
-    public Manager(int i, String n, String ln, Date hd, float s, String t){
+    public Manager(int i, String n, String ln, Date hd, float s, String el){
         super(i, n, ln, hd, s);
-        setTitle(t);
+        setEducationLevel(el);
     }
 
-    public void setTitle(String t){
-        if(t != null)
-            title = t;
+    public void setEducationLevel(String el){
+        if(el != null)
+        educationLevel = el;
         else
             throw new IllegalArgumentException("Invalid Title!");
     }
 
-    public String getTitle(){
-        return title;
+    public String getEducationLevel(){
+        return educationLevel;
     }
 
     @Override 
     public String toString(){
         return super.toString().replace("]", "") 
-               + ", " + "Title: " + getTitle() + "]";
+               + ", " + "Education Level: " + getEducationLevel() + "]";
     }
 
     @Override

@@ -24,7 +24,7 @@ public class Employee implements Comparable<Employee>{
     }
 
     public void setId(int i){
-        if(id > 0 && id < 1000000)
+        if(i > 0 && i < 1000000)
             id = i;
         else
             throw new IllegalArgumentException("Invalid ID!");
@@ -64,12 +64,15 @@ public class Employee implements Comparable<Employee>{
             throw new IllegalArgumentException("Invalid Hire Date!");
     }
 
-    public Date getHireDate(){
-        return hireDate;
+    @SuppressWarnings("deprecation")
+    public String getHireDate(){
+        return hireDate.getYear() + "-" +
+               hireDate.getMonth() + "-" +
+               hireDate.getDate();
     }
 
     public void setSalary(float s){
-        if(salary >= 800 && salary <= 3500)
+        if(s >= 800 && s <= 3500)
             salary = s;
         else
             throw new IllegalArgumentException("Invalid Salary!");
@@ -83,6 +86,7 @@ public class Employee implements Comparable<Employee>{
     public String toString(){
         return "[ID: " + getId() + ", " +
                "Name: " + getName() + ", " +
+               "Hire Date: " + getHireDate() + ", " +
                "Lastname: " + getLastname() + ", " +               
                "Salary: " + getSalary() + "]";
     }
