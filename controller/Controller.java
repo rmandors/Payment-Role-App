@@ -31,6 +31,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -89,7 +90,9 @@ public class Controller {
 
     @FXML
     void deleteReg(ActionEvent event) {
-        boolean confirm = true;
+
+        boolean confirm = showConfirmation("Eliminar Registro", "¿Estás seguro que deseas eliminar este registro?");
+
         if(confirm){
             // Delete the selected employee
             Employee selected = regListView.getSelectionModel().getSelectedItem();
@@ -340,9 +343,21 @@ public class Controller {
     static void showWarning(String title, String content) {
         Alert alert = new Alert(AlertType.WARNING);
         alert.setTitle(title);
-        alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    static boolean showConfirmation(String title, String content) {
+        Alert alert = new Alert(AlertType.CONFIRMATION, content, ButtonType.YES, ButtonType.CANCEL);
+        alert.setTitle(title);
+        alert.showAndWait();
+
+        if (alert.getResult() == ButtonType.YES) {
+            return true;
+        }
+        
+        return false;
+
     }
 
     private static void sortByLastname(){
