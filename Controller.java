@@ -15,6 +15,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -70,6 +72,8 @@ public class Controller {
 
     @FXML
     private ComboBox<String> typeComboBox;
+
+    
 
     @FXML
     void deleteReg(ActionEvent event) {
@@ -199,6 +203,15 @@ public class Controller {
         catch(IOException e){
             e.printStackTrace();
         }
+    }
+
+    // Function to show warning alerts
+    private void showWarning(String title, String content) {
+        Alert alert = new Alert(AlertType.WARNING);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 
     private static void sortByLastname(){
