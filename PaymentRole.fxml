@@ -20,22 +20,22 @@
       <GridPane BorderPane.alignment="CENTER">
         <columnConstraints>
           <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="250.66665649414062" minWidth="10.0" prefWidth="250.66665649414062" />
-          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="166.00003051757812" minWidth="10.0" prefWidth="130.0" />
-            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="254.0" minWidth="10.0" prefWidth="130.0" />
-            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="164.66668701171875" minWidth="10.0" prefWidth="130.0" />
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="166.00003051757812" minWidth="10.0" prefWidth="150.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="254.0" minWidth="10.0" prefWidth="150.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="164.66668701171875" minWidth="10.0" prefWidth="150.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="deleteReg" mnemonicParsing="false" onAction="#deleteReg" prefWidth="110.0" text="Eliminar Registro" GridPane.columnIndex="3" />
-            <Button fx:id="newReg" mnemonicParsing="false" onAction="#newReg" prefWidth="110.0" text="Nuevo Registro" GridPane.columnIndex="2" />
+            <Button fx:id="deleteReg" mnemonicParsing="false" onAction="#deleteReg" prefWidth="115.0" text="Eliminar Registro" GridPane.columnIndex="3" />
+            <Button fx:id="newReg" mnemonicParsing="false" onAction="#newReg" prefWidth="115.0" text="Nuevo Registro" GridPane.columnIndex="2" />
             <Label text="Rol de Pagos" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Button fx:id="export" mnemonicParsing="false" onAction="#export" prefWidth="110.0" text="Exportar" GridPane.columnIndex="1" />
+            <Button fx:id="updateReg" mnemonicParsing="false" onAction="#export" prefWidth="115.0" text="Actualizar Registro" GridPane.columnIndex="1" />
          </children>
       </GridPane>
    </top>
@@ -50,7 +50,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <ListView fx:id="regListView" prefHeight="319.0" prefWidth="202.0" />
+            <ListView fx:id="regListView" prefHeight="294.0" prefWidth="204.0" />
          </children>
       </VBox>
    </left>
@@ -71,7 +71,7 @@
                   </Label>
                   <TextField fx:id="idField" prefHeight="25.0" prefWidth="75.0" />
                   <Label text="Tipo:" />
-                  <ComboBox fx:id="typeComboBox" onAction="#employeeTypeSelection" prefHeight="25.0" prefWidth="104.0" promptText="Empleado" />
+                  <ComboBox fx:id="typeComboBox" prefHeight="25.0" prefWidth="104.0" promptText="Empleado" />
                </children>
                <opaqueInsets>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -179,4 +179,33 @@
          </children>
       </VBox>
    </center>
+   <bottom>
+      <GridPane alignment="CENTER" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="210.33334350585938" minWidth="10.0" prefWidth="116.3333231608073" />
+            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="187.66666666666669" minWidth="10.0" prefWidth="63.000010172526046" />
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="108.0" minWidth="10.0" prefWidth="108.0" />
+            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="136.66668701171875" minWidth="10.0" prefWidth="87.3333740234375" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="114.6666259765625" minWidth="10.0" prefWidth="114.6666259765625" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="119.0" minWidth="10.0" prefWidth="101.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button fx:id="export" mnemonicParsing="false" onAction="#export" prefWidth="100.0" text="Exportar" GridPane.columnIndex="5" />
+            <ComboBox fx:id="orderComboBox" prefWidth="100.0" GridPane.columnIndex="4" />
+            <ComboBox fx:id="formatCombobox" prefWidth="100.0" GridPane.columnIndex="2" />
+            <Label text="Ordenamiento:" GridPane.columnIndex="3" />
+            <Label text="Formato:" GridPane.columnIndex="1" />
+            <Button fx:id="importCSV" mnemonicParsing="false" prefWidth="100.0" text="Importar CSV" />
+         </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+         <padding>
+            <Insets top="5.0" />
+         </padding>
+      </GridPane>
+   </bottom>
 </BorderPane>

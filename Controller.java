@@ -35,6 +35,7 @@ public class Controller {
     private static ObservableList<Employee> employees = FXCollections.observableArrayList();
     private static ObservableList<String> items = FXCollections.observableArrayList(selectionOptions);
 
+
     @FXML
     private TextField comissionField;
 
@@ -48,10 +49,16 @@ public class Controller {
     private Button export;
 
     @FXML
+    private ComboBox<String> formatCombobox;
+
+    @FXML
     private Label fullNameField;
 
     @FXML
     private TextField idField;
+
+    @FXML
+    private Button importCSV;
 
     @FXML
     private TextField lastnameField;
@@ -61,6 +68,9 @@ public class Controller {
 
     @FXML
     private Button newReg;
+
+    @FXML
+    private ComboBox<String> orderComboBox;
 
     @FXML
     private ListView<Employee> regListView;
@@ -73,6 +83,9 @@ public class Controller {
 
     @FXML
     private ComboBox<String> typeComboBox;
+
+    @FXML
+    private Button updateReg;
 
     
 
@@ -129,19 +142,6 @@ public class Controller {
         // Update text fields when selecting an employee
         regListView.getSelectionModel().selectedItemProperty().addListener(
             new ChangeListener<Employee>(){                                   
-<<<<<<< HEAD
-               @Override                                                     
-               public void changed(ObservableValue<? extends Employee> ov,
-                  Employee oldValue, Employee newValue){           
-                    fullNameField.setText(newValue.getName() + " " + newValue.getLastname());             
-                  idField.setText(String.valueOf(newValue.getId()));
-                    nameField.setText(newValue.getName());
-                    lastnameField.setText(newValue.getLastname());
-                    salaryField.setText(String.valueOf(newValue.getSalary()));     
-
-                    if(newValue.getClass() == Manager.class){
-                        typeComboBox.setValue("Manager");
-=======
                 @Override                                                     
                 public void changed(ObservableValue<? extends Employee> ov,
                                    Employee oldValue, Employee newValue){           
@@ -160,24 +160,16 @@ public class Controller {
                     if(newValue.getClass() == Manager.class){
                         typeComboBox.setValue("Manager");
                         titleField.setEditable(true);
->>>>>>> 0d29efc390825b1dfd609d672e32a667d9950795
                         titleField.setText(((Manager)newValue).getEducationLevel());
                         comissionField.setText(String.valueOf(((Manager)newValue).getCommission()));
                     }
                     else{
                         typeComboBox.setValue("Employee");
-<<<<<<< HEAD
-                        titleField.setText("none");
-                        comissionField.setText("0");
-                    }
-               }
-=======
                         titleField.setEditable(false);
                         titleField.setText("none");
                         comissionField.setText("0");
                     }
                 }
->>>>>>> 0d29efc390825b1dfd609d672e32a667d9950795
             }
         );  
 
@@ -270,11 +262,9 @@ public class Controller {
     }
 
     private static void exportXML(String fileName){
-
     }
 
     private static void exportJSON(String fileName){
-
     }
 }
 
