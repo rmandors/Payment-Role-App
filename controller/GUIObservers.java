@@ -7,7 +7,6 @@ import model.Employee;
 
 public class GUIObservers {
 
-
     public static void validateObservers(Controller controller, ListView<Employee> listView) {
 
         controller.idField.focusedProperty().addListener((_,_,newValue) -> {
