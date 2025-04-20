@@ -10,7 +10,6 @@ public class GUIObservers {
 
     public static void validateObservers(Controller controller, ListView<Employee> listView) {
 
-        StringProperty lastId = new SimpleStringProperty(controller.idField.getText());
         controller.idField.focusedProperty().addListener((_,_,newValue) -> {
             if (!newValue /* && !Controller.regListView.getSelectionModel().getSelectedItem().equals(null) */) {
                 String input = controller.idField.getText().trim();

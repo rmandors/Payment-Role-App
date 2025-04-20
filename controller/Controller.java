@@ -58,32 +58,35 @@ public class Controller {
     private static String[] orderOptions = {"Lastname","Salary","Hire Date"}; 
  
     private static ObservableList<Employee> employees = FXCollections.observableArrayList();
+    static ObservableSet<Integer> idSet = FXCollections.observableSet();
+
+
     private static ObservableList<String> typeItems = FXCollections.observableArrayList(typeOptions);
     private static ObservableList<String> formatItems = FXCollections.observableArrayList(formatOptions);
     private static ObservableList<String> orderItems = FXCollections.observableArrayList(orderOptions);
 
-    @FXML private Button deleteReg;
-    @FXML private Button exportData;
-    @FXML private Button importData;
-    @FXML private Button newReg;
-    @FXML private Button updateReg;
+    @FXML Button deleteReg;
+    @FXML Button exportData;
+    @FXML Button importData;
+    @FXML Button newReg;
+    @FXML Button updateReg;
 
-    @FXML private ComboBox<String> formatCombobox;
-    @FXML private ComboBox<String> orderComboBox;
-    @FXML private ComboBox<String> typeComboBox;
+    @FXML ComboBox<String> formatCombobox;
+    @FXML ComboBox<String> orderComboBox;
+    @FXML ComboBox<String> typeComboBox;
 
-    @FXML private DatePicker datePicker;
+    @FXML DatePicker datePicker;
 
-    @FXML private Label fullNameField;
+    @FXML Label fullNameField;
 
-    @FXML private ListView<Employee> regListView;
+    @FXML ListView<Employee> regListView;
 
-    @FXML private TextField idField;
-    @FXML private TextField comissionField;
-    @FXML private TextField lastnameField;
-    @FXML private TextField nameField;
-    @FXML private TextField salaryField;
-    @FXML private TextField titleField;
+    @FXML TextField idField;
+    @FXML TextField comissionField;
+    @FXML TextField lastnameField;
+    @FXML TextField nameField;
+    @FXML TextField salaryField;
+    @FXML TextField titleField;
 
     @FXML
     void deleteReg(ActionEvent event) {
@@ -119,7 +122,7 @@ public class Controller {
     }
 
     @FXML
-    void exportData(ActionEvent event){
+    void export(ActionEvent event){
         String selectedFormat = formatCombobox.getValue();
         if(selectedFormat.equals("CSV")){
             exportCSV("employeesData2.csv");
@@ -159,6 +162,27 @@ public class Controller {
     }
 
     public void initialize(){
+
+        employees.addListener((ListChangeListener<Employee>) change -> {
+            while (change.next()) {
+                if(change.wasAdded()) {
+                    for (Employee employee : change.getAddedSubList()) {
+                        idSet.add(employee.getId());
+                        employee.idProperty().addListener((_,oldValue,newValue) -> {
+                            idSet.remove(oldValue.intValue());
+                            idSet.add(newValue.intValue());
+                        });
+                        
+                    }
+                }
+                else if (change.wasRemoved()) {
+                    for (Employee employee : change.getRemoved()) {
+                        idSet.remove(employee.getId());
+                    }
+                }
+            }
+        } );
+
         typeComboBox.getItems().addAll(typeItems);
         typeComboBox.setValue("Employee");
 
