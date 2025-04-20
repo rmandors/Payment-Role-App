@@ -61,8 +61,8 @@ public class Controller {
     private static ObservableList<String> orderItems = FXCollections.observableArrayList(orderOptions);
 
     @FXML private Button deleteReg;
-    @FXML private Button export;
-    @FXML private Button importCSV;
+    @FXML private Button exportData;
+    @FXML private Button importData;
     @FXML private Button newReg;
     @FXML private Button updateReg;
 
@@ -104,6 +104,11 @@ public class Controller {
     }
 
     @FXML
+    void updateReg(ActionEvent event){
+
+    }
+
+    @FXML
     void newReg(ActionEvent event){
         Employee newEmployee = new Employee(newRegCounter,"Unknown","Unknown",new Date(2025,3,21), 800);
         employees.add(newEmployee);
@@ -112,7 +117,7 @@ public class Controller {
     }
 
     @FXML
-    void export(ActionEvent event){
+    void exportData(ActionEvent event){
         String selectedFormat = formatCombobox.getValue();
         if(selectedFormat.equals("CSV")){
             exportCSV("employeesData2.csv");
