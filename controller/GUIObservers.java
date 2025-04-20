@@ -1,8 +1,30 @@
 package controller;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.scene.control.ListView;
+import model.Employee;
+
 public class GUIObservers {
-    
-    public void validateObservers(Controller controller) {
+
+
+    public static void validateObservers(Controller controller, ListView<Employee> listView) {
+
+        StringProperty lastId = new SimpleStringProperty(controller.idField.getText());
+        controller.idField.focusedProperty().addListener((_,_,newValue) -> {
+            if (!newValue /* && !Controller.regListView.getSelectionModel().getSelectedItem().equals(null) */) {
+                String input = controller.idField.getText().trim();
+
+                if (!(input.matches("[0-9]+") || input.matches(""))) {
+                    Controller.showWarning("Entrada invalida!","El campo de Id solo acepta valores númericos.");
+                    controller.idField.setText("");
+                }
+                else if (Controller.idSet.contains(Integer.parseInt(input)) && !(listView.getSelectionModel().getSelectedItem().getId() == Integer.parseInt(input))) {
+                    Controller.showWarning("Entrada invalida!","El Id escogido ya está en uso.");
+                    controller.idField.setText("");
+                }
+            }
+        });
         
     }
 

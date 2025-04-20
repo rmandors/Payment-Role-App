@@ -1,9 +1,12 @@
 package model;
 import java.util.Date;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+
 @SuppressWarnings("deprecation")
 public class Employee implements Comparable<Employee>{
-    private int id;
+    private IntegerProperty id = new SimpleIntegerProperty();
     private String name;
     private String lastname;
     private Date hireDate;
@@ -27,13 +30,13 @@ public class Employee implements Comparable<Employee>{
 
     public void setId(int i){
         if(i > 0 && i < 10000)
-            id = i;
+            id.set(i);
         else
             throw new IllegalArgumentException("Invalid ID!");
     }
 
     public int getId(){
-        return id;
+        return id.get();
     }
 
     public void setName(String n){
@@ -115,4 +118,9 @@ public class Employee implements Comparable<Employee>{
         else 
             return -1;
     }
+
+
+    public IntegerProperty idProperty() {
+        return id;
+    };
 }

@@ -14,7 +14,9 @@ import java.util.List;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableSet;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -39,6 +41,7 @@ public class Controller {
 
     private static ObservableList<Employee> employees = FXCollections.observableArrayList();
     private static ObservableList<String> items = FXCollections.observableArrayList(selectionOptions);
+    static ObservableSet<Integer> idSet = FXCollections.observableSet();
 
 
     @FXML
@@ -134,6 +137,27 @@ public class Controller {
     }
 
     public void initialize(){
+
+        employees.addListener((ListChangeListener<Employee>) change -> {
+            while (change.next()) {
+                if(change.wasAdded()) {
+                    for (Employee employee : change.getAddedSubList()) {
+                        idSet.add(employee.getId());
+                        employee.idProperty().addListener((_,oldValue,newValue) -> {
+                            idSet.remove(oldValue.intValue());
+                            idSet.add(newValue.intValue());
+                        });
+                        
+                    }
+                }
+                else if (change.wasRemoved()) {
+                    for (Employee employee : change.getRemoved()) {
+                        idSet.remove(employee.getId());
+                    }
+                }
+            }
+        } );
+
         typeComboBox.getItems().addAll(items);
         typeComboBox.setValue("Employee");
 
@@ -143,6 +167,8 @@ public class Controller {
 
         importCSV("employeesData.csv");
         regListView.setItems(employees);
+
+        GUIObservers.validateObservers(this, regListView);
 
         // Update text fields when selecting an employee
         regListView.getSelectionModel().selectedItemProperty().addListener(
@@ -246,7 +272,7 @@ public class Controller {
     }
 
     // Function to show warning alerts
-    private void showWarning(String title, String content) {
+    static void showWarning(String title, String content) {
         Alert alert = new Alert(AlertType.WARNING);
         alert.setTitle(title);
         alert.setHeaderText(null);
