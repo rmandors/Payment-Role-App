@@ -80,6 +80,10 @@ public class Employee implements Comparable<Employee>{
                hireDate.getDate();
     }
 
+    public Date getDate(){
+        return hireDate;
+    }
+
     public void setSalary(float s){
         if(s >= 800 && s <= 3500)
             salary = s;

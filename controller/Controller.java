@@ -115,45 +115,85 @@ public class Controller {
     void updateReg(ActionEvent event){
         Employee selected = regListView.getSelectionModel().getSelectedItem();
         if(selected != null){
-            try{
-                fullNameField.setText(nameField.getText()+" "+lastnameField.getText());
-                selected.setId(Integer.parseInt(idField.getText()));
-                selected.setName(nameField.getText());
-                selected.setLastname(lastnameField.getText());
-                selected.setSalary(Float.parseFloat(salaryField.getText()));
-
-                LocalDate localDate = datePicker.getValue();
-                if(localDate != null){
-                    Date hireDate = new Date(localDate.getYear(), 
-                                         localDate.getMonthValue() - 1, 
-                                         localDate.getDayOfMonth());
-                    selected.setHireDate(hireDate);
+            if (selected.getClass().getName().equals("model."+ typeComboBox.getValue())) {
+                try{
+                    fullNameField.setText(nameField.getText()+" "+lastnameField.getText());
+                    selected.setId(Integer.parseInt(idField.getText()));
+                    selected.setName(nameField.getText());
+                    selected.setLastname(lastnameField.getText());
+                    selected.setSalary(Float.parseFloat(salaryField.getText()));
+    
+                    LocalDate localDate = datePicker.getValue();
+                    if(localDate != null){
+                        Date hireDate = new Date(localDate.getYear(), 
+                                             localDate.getMonthValue() - 1, 
+                                             localDate.getDayOfMonth());
+                        selected.setHireDate(hireDate);
+                    }
+    
+                    if(typeComboBox.getValue().equals("Manager")){
+                        comissionField.setText(String.valueOf(((Manager)selected).getCommission()));
+                        titleField.setEditable(true);
+                        ((Manager)selected).setEducationLevel(titleField.getText());
+                    }
+                    else{
+                        titleField.setEditable(false);
+                        titleField.setText("none");
+                        comissionField.setText("0");
+                    }   
+                    regListView.refresh();
+                }
+                catch(IllegalArgumentException e){
+                    showWarning("Entrada invalida!", e.getMessage());
                 }
 
-                if(typeComboBox.getValue().equals("Manager")){
-                    comissionField.setText(String.valueOf(((Manager)selected).getCommission()));
-                    titleField.setEditable(true);
-                    ((Manager)selected).setEducationLevel(titleField.getText());
+            }
+            else if (typeComboBox.getValue().equals("Manager")) {
+                try {
+                    Manager updatedReg = new Manager(selected.getId(), selected.getName(), selected.getLastname(), selected.getDate(), selected.getSalary(), titleField.getText());
+                    int index = employees.indexOf(selected);
+                    employees.remove(selected);
+                    employees.add(index, updatedReg);
+                    regListView.refresh();
+                    regListView.getSelectionModel().select(index);
+                } catch (IllegalArgumentException e) {
+                    showWarning("Entrada invalida!", e.getMessage());
                 }
-                else{
-                    titleField.setEditable(false);
-                    titleField.setText("none");
-                    comissionField.setText("0");
-                }   
-                regListView.refresh();
             }
-            catch(IllegalArgumentException e){
-                showWarning("Entrada invalida!", e.getMessage());
+            else if (typeComboBox.getValue().equals("Employee")) {
+                try {
+                    Employee updatedReg = new Employee(selected.getId(), selected.getName(), selected.getLastname(), selected.getDate(), selected.getSalary());
+                    int index = employees.indexOf(selected);
+                    employees.remove(selected);
+                    employees.add(index, updatedReg);
+                    regListView.refresh();
+                    regListView.getSelectionModel().select(index);
+                } catch (Exception e) {
+                    showWarning("Entrada invalida!", e.getMessage());
+                }
             }
+            
+            
         }
     }
 
     @FXML
     void newReg(ActionEvent event){
+        if (idSet.contains(newRegCounter)) {
+            newRegCounter = 1;
+            int counter = 0;
+            while (idSet.contains(newRegCounter) && (counter <= 10000)) {
+                counter++;
+                newRegCounter++;
+            }
+            if (counter > 10000) {
+                showWarning("Error Fatal!", "Número máximo de IDs alcanzados, elimina los registros anteriores antes de crear uno nuevo");
+                return;                
+            }
+        }
         Employee newEmployee = new Employee(newRegCounter,"Unknown","Unknown",new Date(2025,3,21), 800);
         employees.add(newEmployee);
         regListView.selectionModelProperty().get().select(newEmployee);
-        newRegCounter++;
     }
 
     @FXML
