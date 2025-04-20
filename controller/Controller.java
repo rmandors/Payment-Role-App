@@ -141,6 +141,13 @@ public class Controller {
                         titleField.setText("none");
                         comissionField.setText("0");
                     }   
+
+                    if(orderComboBox.getValue().equals("Lastname")) 
+                        sortByLastname(); 
+                    else if(orderComboBox.getValue().equals("Salary")) 
+                        sortBySalary();
+                    else if(orderComboBox.getValue().equals("Hire Date"))
+                        sortByHireDate();
                     regListView.refresh();
                 }
                 catch(IllegalArgumentException e){
@@ -225,6 +232,7 @@ public class Controller {
         }
         employees.clear();
         importCSV("employeesData.csv");
+        orderComboBox.setValue("Default");
     }
 
     public void initialize(){
@@ -271,6 +279,17 @@ public class Controller {
 
         orderComboBox.getItems().addAll(orderItems);
         orderComboBox.setValue("Default");
+
+        orderComboBox.getSelectionModel().selectedItemProperty().addListener(
+            (ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+                if(newValue.equals("Lastname")) 
+                    sortByLastname(); 
+                else if(newValue.equals("Salary")) 
+                    sortBySalary();
+                else if(newValue.equals("Hire Date"))
+                    sortByHireDate();
+            }
+        );
  
         if (comissionField != null) {
             comissionField.setEditable(false);
@@ -408,11 +427,11 @@ public class Controller {
     }
 
     private static void sortBySalary(){
-        employees.sort(Employee::compareTo);
+        employees.sort(Comparator.comparing(Employee::getSalary));
     }
 
     private static void sortByHireDate(){
-        employees.sort((e1, e2) -> e1.getHireDate().compareTo(e2.getHireDate()));
+        employees.sort((Comparator.comparing(Employee::getHireDate)));
     }
 
     private static void exportXML(String fileName){
@@ -465,7 +484,7 @@ public class Controller {
         }
     }
 
-        private static void exportFinalReport(String filename){
+    private static void exportFinalReport(String filename){
         try(Formatter output = new Formatter(new File(filename))){
             sortByLastname();
             output.format("%-4s | %-10s | %-10s | %-4s | %-10s | %-10s%n", 
@@ -492,12 +511,12 @@ public class Controller {
         }
     }
 
-    public static int calcIESS(float totalSalary){
+    private static int calcIESS(float totalSalary){
         float iess = totalSalary * 0.0945f;
         return Math.round(iess);
     }
 
-    public static int calcImpRent(float totalSalary){
+    private static int calcImpRent(float totalSalary){
         float impRent = 0;
         float anualSalary = totalSalary * 12;
 
@@ -526,12 +545,12 @@ public class Controller {
         return Math.round(impRent);
     }
 
-    public static int calcLiquidSalary(float totalSalary){
+    private static int calcLiquidSalary(float totalSalary){
         return Math.round(totalSalary 
                           - calcIESS(totalSalary) - calcImpRent(totalSalary));
     }
 
-    public static String salaryToString(int salary) {   
+    private static String salaryToString(int salary) {   
         String[] units = {"", "uno", "dos", "tres", "cuatro", "cinco", "seis",
                           "siete", "ocho", "nueve"};
 
