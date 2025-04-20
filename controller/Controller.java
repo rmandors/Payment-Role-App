@@ -1,19 +1,10 @@
 package controller;
 
-import model.Employee;
-import model.EmployeeComparator;
-import model.EmployeeList;
-import model.Manager;
-
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-
 import java.time.LocalDate;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -30,6 +21,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import model.Employee;
+import model.EmployeeComparator;
+import model.Manager;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -39,51 +33,69 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller; 
-import javax.xml.bind.Unmarshaller; 
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
 @SuppressWarnings("deprecation")
 public class Controller {
 
     private int newRegCounter = 1;
-    private static String[] typeOptions = {"Employee","Manager"};     
-    private static String[] formatOptions = {"CSV","XML","JSON"};       
-    private static String[] orderOptions = {"Lastname","Salary","Hire Date"}; 
- 
+    private static String[] selectionOptions = {"Employee","Manager"};       
+
     private static ObservableList<Employee> employees = FXCollections.observableArrayList();
-    private static ObservableList<String> typeItems = FXCollections.observableArrayList(typeOptions);
-    private static ObservableList<String> formatItems = FXCollections.observableArrayList(formatOptions);
-    private static ObservableList<String> orderItems = FXCollections.observableArrayList(orderOptions);
+    private static ObservableList<String> items = FXCollections.observableArrayList(selectionOptions);
+    static ObservableSet<Integer> idSet = FXCollections.observableSet();
 
-    @FXML private Button deleteReg;
-    @FXML private Button exportData;
-    @FXML private Button importData;
-    @FXML private Button newReg;
-    @FXML private Button updateReg;
 
-    @FXML private ComboBox<String> formatCombobox;
-    @FXML private ComboBox<String> orderComboBox;
-    @FXML private ComboBox<String> typeComboBox;
+    @FXML
+    TextField comissionField;
 
-    @FXML private DatePicker datePicker;
+    @FXML
+    DatePicker datePicker;
 
-    @FXML private Label fullNameField;
+    @FXML
+    Button deleteReg;
 
-    @FXML private ListView<Employee> regListView;
+    @FXML
+    Button export;
 
-    @FXML private TextField idField;
-    @FXML private TextField comissionField;
-    @FXML private TextField lastnameField;
-    @FXML private TextField nameField;
-    @FXML private TextField salaryField;
-    @FXML private TextField titleField;
+    @FXML
+    ComboBox<String> formatCombobox;
+
+    @FXML
+    Label fullNameField;
+
+    @FXML
+    TextField idField;
+
+    @FXML
+    Button importCSV;
+
+    @FXML
+    TextField lastnameField;
+
+    @FXML
+    TextField nameField;
+
+    @FXML
+    Button newReg;
+
+    @FXML
+    ComboBox<String> orderComboBox;
+
+    @FXML
+    ListView<Employee> regListView;
+
+    @FXML
+    TextField salaryField;
+
+    @FXML
+    TextField titleField;
+
+    @FXML
+    ComboBox<String> typeComboBox;
+
+    @FXML
+    Button updateReg;
+
+    
 
     @FXML
     void deleteReg(ActionEvent event) {
@@ -92,22 +104,14 @@ public class Controller {
             // Delete the selected employee
             Employee selected = regListView.getSelectionModel().getSelectedItem();
             if (selected != null){
-                fullNameField.setText("Nombre y Apellido");
                 idField.clear();
                 nameField.clear();
                 lastnameField.clear();
-                datePicker.setValue(null);
                 salaryField.clear();
                 titleField.clear();
-                comissionField.clear();
                 employees.remove(selected);                
             }
         } 
-    }
-
-    @FXML
-    void updateReg(ActionEvent event){
-
     }
 
     @FXML
@@ -119,34 +123,8 @@ public class Controller {
     }
 
     @FXML
-    void exportData(ActionEvent event){
-        String selectedFormat = formatCombobox.getValue();
-        if(selectedFormat.equals("CSV")){
-            exportCSV("employeesData2.csv");
-        }
-        else if(selectedFormat.equals("XML")){
-            exportXML("employeesData.xml");
-        }
-        else if(selectedFormat.equals("JSON")){
-            exportJSON("employeesData.json");
-        }
-    }
-
-    @FXML
-    void importData(ActionEvent event){ 
-        Employee selected = regListView.getSelectionModel().getSelectedItem();
-        if(selected != null){
-            fullNameField.setText("Nombre y Apellido");
-            idField.clear();
-            nameField.clear();
-            lastnameField.clear();
-            datePicker.setValue(null);
-            salaryField.clear();
-            titleField.clear();
-            comissionField.clear();
-        }
-        employees.clear();
-        importCSV("employeesData.csv");
+    void export(ActionEvent event){
+        exportCSV("employeesData2.csv");
     }
 
     @FXML
@@ -159,15 +137,30 @@ public class Controller {
     }
 
     public void initialize(){
-        typeComboBox.getItems().addAll(typeItems);
+
+        employees.addListener((ListChangeListener<Employee>) change -> {
+            while (change.next()) {
+                if(change.wasAdded()) {
+                    for (Employee employee : change.getAddedSubList()) {
+                        idSet.add(employee.getId());
+                        employee.idProperty().addListener((_,oldValue,newValue) -> {
+                            idSet.remove(oldValue.intValue());
+                            idSet.add(newValue.intValue());
+                        });
+                        
+                    }
+                }
+                else if (change.wasRemoved()) {
+                    for (Employee employee : change.getRemoved()) {
+                        idSet.remove(employee.getId());
+                    }
+                }
+            }
+        } );
+
+        typeComboBox.getItems().addAll(items);
         typeComboBox.setValue("Employee");
 
-        formatCombobox.getItems().addAll(formatItems);
-        formatCombobox.setValue("CSV");
-
-        orderComboBox.getItems().addAll(orderItems);
-        orderComboBox.setValue("Default");
- 
         if (comissionField != null) {
             comissionField.setEditable(false);
         }
@@ -300,53 +293,9 @@ public class Controller {
     }
 
     private static void exportXML(String fileName){
-        try{
-            JAXBContext contextObj = JAXBContext.newInstance(EmployeeList.class);
-            Marshaller marshallerObj = contextObj.createMarshaller();
-            marshallerObj.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-
-            EmployeeList employeesList = new EmployeeList(employees);
-
-            marshallerObj.marshal(employeesList, new FileOutputStream(fileName));
-
-            System.out.println("XML file written successfully!");
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
     }
 
-    @SuppressWarnings("unchecked")
     private static void exportJSON(String fileName){
-        try(FileWriter file = new FileWriter(fileName)){
-            JSONArray employeesArray = new JSONArray();
-
-            for(Employee e : employees){
-                JSONObject employeeDetails = new JSONObject();
-                employeeDetails.put("name", e.getName());
-                employeeDetails.put("lastname", e.getLastname());
-                employeeDetails.put("hireDate", e.getHireDate());
-                employeeDetails.put("salary", e.getSalary());
-                if(e.getClass() == Manager.class)
-                    employeeDetails.put("educationLevel", ((Manager)e).getEducationLevel());
-                else
-                    employeeDetails.put("educationLevel", "none");
-    
-                JSONObject employeeObject = new JSONObject();
-                if(e.getClass() == Manager.class)
-                    employeeObject.put("manager", employeeDetails);
-                else
-                    employeeObject.put("employee", employeeDetails);
-    
-                employeesArray.add(employeeObject);
-            }
-    
-            file.write(employeesArray.toJSONString());
-            file.flush();
-        }
-        catch(IOException e){
-            e.printStackTrace();
-        }
     }
 }
 
