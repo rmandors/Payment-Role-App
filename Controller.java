@@ -21,6 +21,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 
 @SuppressWarnings("deprecation")
@@ -99,6 +100,15 @@ public class Controller {
     @FXML
     void export(ActionEvent event){
         exportCSV("employeesData2.csv");
+    }
+
+    @FXML
+    void employeeTypeSelection(ActionEvent event){
+        String s = typeComboBox.getValue();
+        if(s.equals("Employee"))
+            titleField.setEditable(false);
+        else if(s.equals("Manager"))
+            titleField.setEditable(true);
     }
 
     public void initialize(){
