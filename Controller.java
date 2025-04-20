@@ -1,8 +1,11 @@
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+
 import java.time.LocalDate;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -26,15 +29,28 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller; 
+import javax.xml.bind.Unmarshaller; 
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 @SuppressWarnings("deprecation")
 public class Controller {
 
     private int newRegCounter = 1;
-    private static String[] selectionOptions = {"Employee","Manager"};       
-
+    private static String[] typeOptions = {"Employee","Manager"};     
+    private static String[] formatOptions = {"CSV","XML","JSON"};       
+    private static String[] orderOptions = {"Lastname","Salary","Hire Date"}; 
+ 
     private static ObservableList<Employee> employees = FXCollections.observableArrayList();
-    private static ObservableList<String> items = FXCollections.observableArrayList(selectionOptions);
-
+    private static ObservableList<String> typeItems = FXCollections.observableArrayList(typeOptions);
+    private static ObservableList<String> formatItems = FXCollections.observableArrayList(formatOptions);
+    private static ObservableList<String> orderItems = FXCollections.observableArrayList(orderOptions);
 
     @FXML
     private TextField comissionField;
@@ -86,9 +102,7 @@ public class Controller {
 
     @FXML
     private Button updateReg;
-
     
-
     @FXML
     void deleteReg(ActionEvent event) {
         boolean confirm = true;
@@ -116,7 +130,16 @@ public class Controller {
 
     @FXML
     void export(ActionEvent event){
-        exportCSV("employeesData2.csv");
+        String selectedFormat = formatCombobox.getValue();
+        if(selectedFormat.equals("CSV")){
+            exportCSV("employeesData2.csv");
+        }
+        else if(selectedFormat.equals("XML")){
+            exportXML("employeesData2.xml");
+        }
+        else if(selectedFormat.equals("JSON")){
+            exportJSON("employeesData2.json");
+        }
     }
 
     @FXML
@@ -129,9 +152,15 @@ public class Controller {
     }
 
     public void initialize(){
-        typeComboBox.getItems().addAll(items);
+        typeComboBox.getItems().addAll(typeItems);
         typeComboBox.setValue("Employee");
 
+        formatCombobox.getItems().addAll(formatItems);
+        formatCombobox.setValue("CSV");
+
+        orderComboBox.getItems().addAll(orderItems);
+        orderComboBox.setValue("Default");
+ 
         if (comissionField != null) {
             comissionField.setEditable(false);
         }
@@ -262,9 +291,40 @@ public class Controller {
     }
 
     private static void exportXML(String fileName){
+        
     }
 
+    @SuppressWarnings("unchecked")
     private static void exportJSON(String fileName){
+        try(FileWriter file = new FileWriter(fileName)){
+            JSONArray employeesArray = new JSONArray();
+
+            for(Employee e : employees){
+                JSONObject employeeDetails = new JSONObject();
+                employeeDetails.put("name", e.getName());
+                employeeDetails.put("lastname", e.getLastname());
+                employeeDetails.put("hireDate", e.getHireDate());
+                employeeDetails.put("salary", e.getSalary());
+                if(e.getClass() == Manager.class)
+                    employeeDetails.put("educationLevel", ((Manager)e).getEducationLevel());
+                else
+                    employeeDetails.put("educationLevel", "none");
+    
+                JSONObject employeeObject = new JSONObject();
+                if(e.getClass() == Manager.class)
+                    employeeObject.put("manager", employeeDetails);
+                else
+                    employeeObject.put("employee", employeeDetails);
+    
+                employeesArray.add(employeeObject);
+            }
+    
+            file.write(employeesArray.toJSONString());
+            file.flush();
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
     }
 }
 
