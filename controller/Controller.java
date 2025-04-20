@@ -57,10 +57,9 @@ public class Controller {
     private static String[] formatOptions = {"CSV","XML","JSON"};       
     private static String[] orderOptions = {"Lastname","Salary","Hire Date"}; 
  
-    private static ObservableList<Employee> employees = FXCollections.observableArrayList();
     static ObservableSet<Integer> idSet = FXCollections.observableSet();
 
-
+    private static ObservableList<Employee> employees = FXCollections.observableArrayList();
     private static ObservableList<String> typeItems = FXCollections.observableArrayList(typeOptions);
     private static ObservableList<String> formatItems = FXCollections.observableArrayList(formatOptions);
     private static ObservableList<String> orderItems = FXCollections.observableArrayList(orderOptions);
@@ -110,7 +109,39 @@ public class Controller {
 
     @FXML
     void updateReg(ActionEvent event){
+        Employee selected = regListView.getSelectionModel().getSelectedItem();
+        if(selected != null){
+            try{
+                fullNameField.setText(nameField.getText()+" "+lastnameField.getText());
+                selected.setId(Integer.parseInt(idField.getText()));
+                selected.setName(nameField.getText());
+                selected.setLastname(lastnameField.getText());
+                selected.setSalary(Float.parseFloat(salaryField.getText()));
 
+                LocalDate localDate = datePicker.getValue();
+                if(localDate != null){
+                    Date hireDate = new Date(localDate.getYear(), 
+                                         localDate.getMonthValue() - 1, 
+                                         localDate.getDayOfMonth());
+                    selected.setHireDate(hireDate);
+                }
+
+                if(typeComboBox.getValue().equals("Manager")){
+                    comissionField.setText(String.valueOf(((Manager)selected).getCommission()));
+                    titleField.setEditable(true);
+                    ((Manager)selected).setEducationLevel(titleField.getText());
+                }
+                else{
+                    titleField.setEditable(false);
+                    titleField.setText("none");
+                    comissionField.setText("0");
+                }   
+                regListView.refresh();
+            }
+            catch(IllegalArgumentException e){
+                showWarning("Entrada invalida!", e.getMessage());
+            }
+        }
     }
 
     @FXML
@@ -122,7 +153,7 @@ public class Controller {
     }
 
     @FXML
-    void export(ActionEvent event){
+    void exportData(ActionEvent event){
         String selectedFormat = formatCombobox.getValue();
         if(selectedFormat.equals("CSV")){
             exportCSV("employeesData2.csv");
@@ -152,15 +183,6 @@ public class Controller {
         importCSV("employeesData.csv");
     }
 
-    @FXML
-    void employeeTypeSelection(ActionEvent event){
-        String s = typeComboBox.getValue();
-        if(s.equals("Employee"))
-            titleField.setEditable(false);
-        else if(s.equals("Manager"))
-            titleField.setEditable(true);
-    }
-
     public void initialize(){
 
         employees.addListener((ListChangeListener<Employee>) change -> {
@@ -185,6 +207,20 @@ public class Controller {
 
         typeComboBox.getItems().addAll(typeItems);
         typeComboBox.setValue("Employee");
+
+        typeComboBox.getSelectionModel().selectedItemProperty().addListener(
+            (ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+                if (newValue.equals("Employee")) {
+                    titleField.setEditable(false);
+                    titleField.setText("none");
+                    comissionField.setText("0");
+                } 
+                else if (newValue.equals("Manager")) {
+                    titleField.setEditable(true);
+                    titleField.clear();
+                }
+            }
+        );
 
         formatCombobox.getItems().addAll(formatItems);
         formatCombobox.setValue("CSV");
@@ -221,13 +257,11 @@ public class Controller {
                   
                     if(newValue.getClass() == Manager.class){
                         typeComboBox.setValue("Manager");
-                        titleField.setEditable(true);
                         titleField.setText(((Manager)newValue).getEducationLevel());
                         comissionField.setText(String.valueOf(((Manager)newValue).getCommission()));
                     }
                     else{
                         typeComboBox.setValue("Employee");
-                        titleField.setEditable(false);
                         titleField.setText("none");
                         comissionField.setText("0");
                     }
