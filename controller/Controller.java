@@ -91,6 +91,7 @@ public class Controller {
     @FXML
     void deleteReg(ActionEvent event) {
 
+        if (regListView.getSelectionModel().getSelectedItem() == null) return;
         boolean confirm = showConfirmation("Eliminar Registro", "¿Estás seguro que deseas eliminar este registro?");
 
         if(confirm){
@@ -244,30 +245,32 @@ public class Controller {
         regListView.getSelectionModel().selectedItemProperty().addListener(
             new ChangeListener<Employee>(){                                   
                 @Override                                                     
-                public void changed(ObservableValue<? extends Employee> ov,
-                                   Employee oldValue, Employee newValue){           
-                    fullNameField.setText(newValue.getName() + " " + newValue.getLastname());             
-                    idField.setText(String.valueOf(newValue.getId()));
-                    nameField.setText(newValue.getName());
-                    lastnameField.setText(newValue.getLastname());
-                    salaryField.setText(String.valueOf(newValue.getSalary()));  
+                public void changed(ObservableValue<? extends Employee> ov,Employee oldValue, Employee newValue){ 
+                    if (newValue != null) {
+                        fullNameField.setText(newValue.getName() + " " + newValue.getLastname());             
+                        idField.setText(String.valueOf(newValue.getId()));
+                        nameField.setText(newValue.getName());
+                        lastnameField.setText(newValue.getLastname());
+                        salaryField.setText(String.valueOf(newValue.getSalary()));  
 
-                    String[] dateParts = newValue.getHireDate().split("-");
-                    LocalDate hireDate = LocalDate.of(Integer.parseInt(dateParts[0]),
-                                                      Integer.parseInt(dateParts[1]),
-                                                      Integer.parseInt(dateParts[2]));
-                    datePicker.setValue(hireDate);
-                  
-                    if(newValue.getClass() == Manager.class){
-                        typeComboBox.setValue("Manager");
-                        titleField.setText(((Manager)newValue).getEducationLevel());
-                        comissionField.setText(String.valueOf(((Manager)newValue).getCommission()));
+                        String[] dateParts = newValue.getHireDate().split("-");
+                        LocalDate hireDate = LocalDate.of(Integer.parseInt(dateParts[0]),
+                                                        Integer.parseInt(dateParts[1]),
+                                                        Integer.parseInt(dateParts[2]));
+                        datePicker.setValue(hireDate);
+                    
+                        if(newValue.getClass() == Manager.class){
+                            typeComboBox.setValue("Manager");
+                            titleField.setText(((Manager)newValue).getEducationLevel());
+                            comissionField.setText(String.valueOf(((Manager)newValue).getCommission()));
+                        }
+                        else{
+                            typeComboBox.setValue("Employee");
+                            titleField.setText("none");
+                            comissionField.setText("0");
+                        }
                     }
-                    else{
-                        typeComboBox.setValue("Employee");
-                        titleField.setText("none");
-                        comissionField.setText("0");
-                    }
+                    
                 }
             }
         );  

@@ -10,7 +10,7 @@ public class GUIObservers {
     public static void validateObservers(Controller controller, ListView<Employee> listView) {
 
         controller.idField.focusedProperty().addListener((_,_,newValue) -> {
-            if (!newValue /* && !Controller.regListView.getSelectionModel().getSelectedItem().equals(null) */) {
+            if (!newValue && !(listView.getSelectionModel().getSelectedItem() == null)) {
                 String input = controller.idField.getText().trim();
 
                 if (!(input.matches("[0-9]+") || input.matches(""))) {
