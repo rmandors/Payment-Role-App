@@ -23,6 +23,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 
 @SuppressWarnings("deprecation")
@@ -105,9 +106,22 @@ public class Controller {
         exportCSV("employeesData2.csv");
     }
 
+    @FXML
+    void employeeTypeSelection(ActionEvent event){
+        String s = typeComboBox.getValue();
+        if(s.equals("Employee"))
+            titleField.setEditable(false);
+        else if(s.equals("Manager"))
+            titleField.setEditable(true);
+    }
+
     public void initialize(){
         typeComboBox.getItems().addAll(items);
         typeComboBox.setValue("Employee");
+
+        if (comissionField != null) {
+            comissionField.setEditable(false);
+        }
 
         importCSV("employeesData.csv");
         regListView.setItems(employees);
@@ -115,6 +129,7 @@ public class Controller {
         // Update text fields when selecting an employee
         regListView.getSelectionModel().selectedItemProperty().addListener(
             new ChangeListener<Employee>(){                                   
+<<<<<<< HEAD
                @Override                                                     
                public void changed(ObservableValue<? extends Employee> ov,
                   Employee oldValue, Employee newValue){           
@@ -126,15 +141,43 @@ public class Controller {
 
                     if(newValue.getClass() == Manager.class){
                         typeComboBox.setValue("Manager");
+=======
+                @Override                                                     
+                public void changed(ObservableValue<? extends Employee> ov,
+                                   Employee oldValue, Employee newValue){           
+                    fullNameField.setText(newValue.getName() + " " + newValue.getLastname());             
+                    idField.setText(String.valueOf(newValue.getId()));
+                    nameField.setText(newValue.getName());
+                    lastnameField.setText(newValue.getLastname());
+                    salaryField.setText(String.valueOf(newValue.getSalary()));  
+
+                    String[] dateParts = newValue.getHireDate().split("-");
+                    LocalDate hireDate = LocalDate.of(Integer.parseInt(dateParts[0]),
+                                                      Integer.parseInt(dateParts[1]),
+                                                      Integer.parseInt(dateParts[2]));
+                    datePicker.setValue(hireDate);
+                  
+                    if(newValue.getClass() == Manager.class){
+                        typeComboBox.setValue("Manager");
+                        titleField.setEditable(true);
+>>>>>>> 0d29efc390825b1dfd609d672e32a667d9950795
                         titleField.setText(((Manager)newValue).getEducationLevel());
                         comissionField.setText(String.valueOf(((Manager)newValue).getCommission()));
                     }
                     else{
                         typeComboBox.setValue("Employee");
+<<<<<<< HEAD
                         titleField.setText("none");
                         comissionField.setText("0");
                     }
                }
+=======
+                        titleField.setEditable(false);
+                        titleField.setText("none");
+                        comissionField.setText("0");
+                    }
+                }
+>>>>>>> 0d29efc390825b1dfd609d672e32a667d9950795
             }
         );  
 
