@@ -35,7 +35,7 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Button fx:id="updateReg" mnemonicParsing="false" onAction="#export" prefWidth="115.0" text="Actualizar Registro" GridPane.columnIndex="1" />
+            <Button fx:id="updateReg" mnemonicParsing="false" onAction="#updateReg" prefWidth="115.0" text="Actualizar Registro" GridPane.columnIndex="1" />
          </children>
       </GridPane>
    </top>
@@ -193,7 +193,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="export" mnemonicParsing="false" onAction="#export" prefWidth="100.0" text="Exportar" GridPane.columnIndex="5" />
+            <Button fx:id="export" mnemonicParsing="false" onAction="#exportData" prefWidth="100.0" text="Exportar" GridPane.columnIndex="5" />
             <ComboBox fx:id="orderComboBox" prefWidth="100.0" GridPane.columnIndex="4" />
             <ComboBox fx:id="formatCombobox" prefWidth="100.0" GridPane.columnIndex="2" />
             <Label text="Ordenamiento:" GridPane.columnIndex="3" />
