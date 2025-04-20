@@ -1,6 +1,12 @@
 package model;
+
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlAttribute;  
+import javax.xml.bind.annotation.XmlElement;  
+import javax.xml.bind.annotation.XmlRootElement;  
+
+@XmlRootElement
 public class Manager extends Employee {
     private String educationLevel;
     private final float commissionRate = 0.05f;
@@ -17,6 +23,7 @@ public class Manager extends Employee {
             throw new IllegalArgumentException("Invalid Education Level!");
     }
 
+    @XmlElement 
     public String getEducationLevel(){
         return educationLevel;
     }
