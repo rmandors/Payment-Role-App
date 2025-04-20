@@ -60,57 +60,29 @@ public class Controller {
     private static ObservableList<String> formatItems = FXCollections.observableArrayList(formatOptions);
     private static ObservableList<String> orderItems = FXCollections.observableArrayList(orderOptions);
 
-    @FXML
-    private TextField comissionField;
+    @FXML private Button deleteReg;
+    @FXML private Button export;
+    @FXML private Button importCSV;
+    @FXML private Button newReg;
+    @FXML private Button updateReg;
 
-    @FXML
-    private DatePicker datePicker;
+    @FXML private ComboBox<String> formatCombobox;
+    @FXML private ComboBox<String> orderComboBox;
+    @FXML private ComboBox<String> typeComboBox;
 
-    @FXML
-    private Button deleteReg;
+    @FXML private DatePicker datePicker;
 
-    @FXML
-    private Button export;
+    @FXML private Label fullNameField;
 
-    @FXML
-    private ComboBox<String> formatCombobox;
+    @FXML private ListView<Employee> regListView;
 
-    @FXML
-    private Label fullNameField;
+    @FXML private TextField idField;
+    @FXML private TextField comissionField;
+    @FXML private TextField lastnameField;
+    @FXML private TextField nameField;
+    @FXML private TextField salaryField;
+    @FXML private TextField titleField;
 
-    @FXML
-    private TextField idField;
-
-    @FXML
-    private Button importCSV;
-
-    @FXML
-    private TextField lastnameField;
-
-    @FXML
-    private TextField nameField;
-
-    @FXML
-    private Button newReg;
-
-    @FXML
-    private ComboBox<String> orderComboBox;
-
-    @FXML
-    private ListView<Employee> regListView;
-
-    @FXML
-    private TextField salaryField;
-
-    @FXML
-    private TextField titleField;
-
-    @FXML
-    private ComboBox<String> typeComboBox;
-
-    @FXML
-    private Button updateReg;
-    
     @FXML
     void deleteReg(ActionEvent event) {
         boolean confirm = true;
@@ -118,11 +90,14 @@ public class Controller {
             // Delete the selected employee
             Employee selected = regListView.getSelectionModel().getSelectedItem();
             if (selected != null){
+                fullNameField.setText("Nombre y Apellido");
                 idField.clear();
                 nameField.clear();
                 lastnameField.clear();
+                datePicker.setValue(null);
                 salaryField.clear();
                 titleField.clear();
+                comissionField.clear();
                 employees.remove(selected);                
             }
         } 
@@ -143,11 +118,28 @@ public class Controller {
             exportCSV("employeesData2.csv");
         }
         else if(selectedFormat.equals("XML")){
-            exportXML("employeesData2.xml");
+            exportXML("employeesData.xml");
         }
         else if(selectedFormat.equals("JSON")){
-            exportJSON("employeesData2.json");
+            exportJSON("employeesData.json");
         }
+    }
+
+    @FXML
+    void importData(ActionEvent event){ 
+        Employee selected = regListView.getSelectionModel().getSelectedItem();
+        if(selected != null){
+            fullNameField.setText("Nombre y Apellido");
+            idField.clear();
+            nameField.clear();
+            lastnameField.clear();
+            datePicker.setValue(null);
+            salaryField.clear();
+            titleField.clear();
+            comissionField.clear();
+        }
+        employees.clear();
+        importCSV("employeesData.csv");
     }
 
     @FXML
