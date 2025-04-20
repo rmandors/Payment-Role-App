@@ -1,13 +1,18 @@
 package model;
+
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;  
 import javax.xml.bind.annotation.XmlElement;  
-import javax.xml.bind.annotation.XmlRootElement;  
+import javax.xml.bind.annotation.XmlRootElement;
+
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;  
 
 @SuppressWarnings("deprecation")
+@XmlRootElement(name="employee") 
 public class Employee implements Comparable<Employee>{
     private IntegerProperty id = new SimpleIntegerProperty();
     private String name;
@@ -15,13 +20,7 @@ public class Employee implements Comparable<Employee>{
     private Date hireDate;
     private float salary;
     
-    public Employee(){
-        //id = 1;
-        //name = "Unknown";
-        //lastname = "Unknown";
-        //hireDate = new Date();
-        //salary = 800.0f;
-    }
+    public Employee(){}
 
     public Employee(int i, String n, String ln, Date hd, float s){
         setId(i);
@@ -35,31 +34,34 @@ public class Employee implements Comparable<Employee>{
         if(i > 0 && i < 10000)
             id.set(i);
         else
-            throw new IllegalArgumentException("Invalid ID!");
+            throw new IllegalArgumentException("Invalid ID. Must be beetween: 1-9999!");
     }
 
+    @XmlElement
     public int getId(){
         return id.get();
     }
 
     public void setName(String n){
-        if(n != null)
+        if(n.length() > 0)
             name = n;
         else
-            throw new IllegalArgumentException("Invalid Name!");
+            throw new IllegalArgumentException("Invalid Name length!");
     }
 
+    @XmlElement
     public String getName(){
         return name;
     }
 
     public void setLastname(String ln){
-        if(ln != null)
+        if(ln.length() > 0)
             lastname = ln;
         else
-            throw new IllegalArgumentException("Invalid Lastname!");
+            throw new IllegalArgumentException("Invalid Lastname length!");
     }
 
+    @XmlElement
     public String getLastname(){
         return lastname;
     }
@@ -71,6 +73,7 @@ public class Employee implements Comparable<Employee>{
             throw new IllegalArgumentException("Invalid Hire Date!");
     }
 
+    @XmlElement
     public String getHireDate(){
         return hireDate.getYear() + "-" +
                (hireDate.getMonth() + 1)+ "-" +
@@ -81,9 +84,14 @@ public class Employee implements Comparable<Employee>{
         if(s >= 800 && s <= 3500)
             salary = s;
         else
-            throw new IllegalArgumentException("Invalid Salary!");
+            throw new IllegalArgumentException("Invalid Salary. Must be beetween: 800-3500!");
     }
 
+    public IntegerProperty idProperty() {
+        return id;
+    };
+
+    @XmlElement
     public float getSalary(){
         return salary;
     }
@@ -119,11 +127,6 @@ public class Employee implements Comparable<Employee>{
         else if(getSalary() == right.getSalary())
             return 0;
         else 
-            return -1;
+            return -1;            
     }
-
-
-    public IntegerProperty idProperty() {
-        return id;
-    };
 }
