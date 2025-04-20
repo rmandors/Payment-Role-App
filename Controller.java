@@ -2,7 +2,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -105,32 +105,44 @@ public class Controller {
         typeComboBox.getItems().addAll(items);
         typeComboBox.setValue("Employee");
 
+        if (comissionField != null) {
+            comissionField.setEditable(false);
+        }
+
         importCSV("employeesData.csv");
         regListView.setItems(employees);
 
         // Update text fields when selecting an employee
         regListView.getSelectionModel().selectedItemProperty().addListener(
             new ChangeListener<Employee>(){                                   
-               @Override                                                     
-               public void changed(ObservableValue<? extends Employee> ov,
-                  Employee oldValue, Employee newValue){           
-                  fullNameField.setText(newValue.getName() + " " + newValue.getLastname());             
-                  idField.setText(String.valueOf(newValue.getId()));
-                  nameField.setText(newValue.getName());
-                  lastnameField.setText(newValue.getLastname());
-                  salaryField.setText(String.valueOf(newValue.getSalary()));  
+                @Override                                                     
+                public void changed(ObservableValue<? extends Employee> ov,
+                                   Employee oldValue, Employee newValue){           
+                    fullNameField.setText(newValue.getName() + " " + newValue.getLastname());             
+                    idField.setText(String.valueOf(newValue.getId()));
+                    nameField.setText(newValue.getName());
+                    lastnameField.setText(newValue.getLastname());
+                    salaryField.setText(String.valueOf(newValue.getSalary()));  
+
+                    String[] dateParts = newValue.getHireDate().split("-");
+                    LocalDate hireDate = LocalDate.of(Integer.parseInt(dateParts[0]),
+                                                      Integer.parseInt(dateParts[1]),
+                                                      Integer.parseInt(dateParts[2]));
+                    datePicker.setValue(hireDate);
                   
-                  if(newValue.getClass() == Manager.class){
-                      typeComboBox.setValue("Manager");
-                      titleField.setText(((Manager)newValue).getEducationLevel());
-                      comissionField.setText(String.valueOf(((Manager)newValue).getCommission()));
-                  }
-                  else{
-                      typeComboBox.setValue("Employee");
-                      titleField.setText("none");
-                      comissionField.setText("0");
-                  }
-               }
+                    if(newValue.getClass() == Manager.class){
+                        typeComboBox.setValue("Manager");
+                        titleField.setEditable(true);
+                        titleField.setText(((Manager)newValue).getEducationLevel());
+                        comissionField.setText(String.valueOf(((Manager)newValue).getCommission()));
+                    }
+                    else{
+                        typeComboBox.setValue("Employee");
+                        titleField.setEditable(false);
+                        titleField.setText("none");
+                        comissionField.setText("0");
+                    }
+                }
             }
         );  
 
@@ -214,9 +226,11 @@ public class Controller {
     }
 
     private static void exportXML(String fileName){
+
     }
 
     private static void exportJSON(String fileName){
+
     }
 }
 
