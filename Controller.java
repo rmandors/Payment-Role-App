@@ -118,22 +118,22 @@ public class Controller {
                @Override                                                     
                public void changed(ObservableValue<? extends Employee> ov,
                   Employee oldValue, Employee newValue){           
-                  fullNameField.setText(newValue.getName() + " " + newValue.getLastname());             
+                    fullNameField.setText(newValue.getName() + " " + newValue.getLastname());             
                   idField.setText(String.valueOf(newValue.getId()));
-                  nameField.setText(newValue.getName());
-                  lastnameField.setText(newValue.getLastname());
-                  salaryField.setText(String.valueOf(newValue.getSalary()));  
-                  
-                  if(newValue.getClass() == Manager.class){
-                      typeComboBox.setValue("Manager");
-                      titleField.setText(((Manager)newValue).getEducationLevel());
-                      comissionField.setText(String.valueOf(((Manager)newValue).getCommission()));
-                  }
-                  else{
-                      typeComboBox.setValue("Employee");
-                      titleField.setText("none");
-                      comissionField.setText("0");
-                  }
+                    nameField.setText(newValue.getName());
+                    lastnameField.setText(newValue.getLastname());
+                    salaryField.setText(String.valueOf(newValue.getSalary()));     
+
+                    if(newValue.getClass() == Manager.class){
+                        typeComboBox.setValue("Manager");
+                        titleField.setText(((Manager)newValue).getEducationLevel());
+                        comissionField.setText(String.valueOf(((Manager)newValue).getCommission()));
+                    }
+                    else{
+                        typeComboBox.setValue("Employee");
+                        titleField.setText("none");
+                        comissionField.setText("0");
+                    }
                }
             }
         );  
