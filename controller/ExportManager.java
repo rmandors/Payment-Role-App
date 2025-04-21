@@ -19,6 +19,7 @@ import model.Employee;
 import model.EmployeeList;
 import model.Manager;
 
+@SuppressWarnings({"deprecation", "unchecked"})
 public class ExportManager {
 
     // Exports employees list to XML
@@ -40,7 +41,6 @@ public class ExportManager {
     }
 
     // Exports employees list to JSON
-    @SuppressWarnings({"deprecation", "unchecked"})
     static void exportJSON(String fileName){
         try(FileWriter file = new FileWriter(fileName)){
             JSONArray employeesArray = new JSONArray();
