@@ -57,8 +57,13 @@ public class Manager extends Employee {
     // Comparable
     @Override
     public int compareTo(Employee right){
-        float totalPayment = getSalary() + getCommission(); ;
-        float rightTotalPayment = right.getSalary() + ((Manager)right).getCommission();
+        float totalPayment = getSalary() + getCommission();
+        float rightTotalPayment = 0;
+
+        if(right.getClass() != Manager.class)
+            rightTotalPayment = right.getSalary() + ((Manager)right).getCommission();
+        else
+            rightTotalPayment = right.getSalary();            
 
         if(totalPayment > rightTotalPayment)
             return 1;
