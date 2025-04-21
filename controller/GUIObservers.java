@@ -27,7 +27,7 @@ public class GUIObservers {
         
     }
 
-    static void formatObserver(Controller controller, ComboBox<String> comboBox){
+    /* static void formatObserver(Controller controller, ComboBox<String> comboBox){
         comboBox.getSelectionModel().selectedItemProperty().addListener(
             (ObservableValue<? extends String> _, String _, String newValue) -> {
                 if (newValue == "Consola") {
@@ -37,6 +37,6 @@ public class GUIObservers {
                     controller.orderComboBox.setDisable(false);
                 }
         });
-    }
+    } */
 
 }

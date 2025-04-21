@@ -57,7 +57,7 @@ public class Controller {
 
     private int newRegCounter = 1;
     private static String[] typeOptions = {"Employee","Manager"};     
-    private static String[] formatOptions = {"CSV","XML","JSON","Consola"};       
+    private static String[] formatOptions = {"CSV","XML","JSON","Archivo de texto","Consola (Completo)", "Consola (Unitario)"};       
     private static String[] orderOptions = {"Lastname","Salary","Hire Date"}; 
  
     static ObservableSet<Integer> idSet = FXCollections.observableSet();
@@ -299,7 +299,7 @@ public class Controller {
 
         formatCombobox.getItems().addAll(formatItems);
         formatCombobox.setValue("CSV");
-        GUIObservers.formatObserver(this, formatCombobox);
+        //GUIObservers.formatObserver(this, formatCombobox);
 
         orderComboBox.getItems().addAll(orderItems);
         orderComboBox.setValue("Default");
