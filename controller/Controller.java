@@ -32,6 +32,11 @@ public class Controller {
 
     // Declare combobox options
     private int newRegCounter = 1;
+    private int CSVExportsCounter = 2;
+    private int XMLExportsCounter = 1;
+    private int JSONExportsCounter = 1;
+    private int finalReportExportsCounter = 1;
+    
     private static String[] typeOptions = {"Employee","Manager"};     
     private static String[] formatOptions = {"CSV","XML","JSON","Archivo de texto","Consola (Completo)", "Consola (Unitario)"};       
     private static String[] orderOptions = {"Lastname","Salary","Hire Date"}; 
@@ -79,7 +84,8 @@ public class Controller {
     void deleteReg(ActionEvent event) {
 
         if (regListView.getSelectionModel().getSelectedItem() == null) return;
-        boolean confirm = AlertManager.showConfirmation("Eliminar Registro", "¿Estás seguro que deseas eliminar este registro?");
+        boolean confirm = AlertManager.showConfirmation("Eliminar Registro",
+                                                        "¿Estás seguro que deseas eliminar este registro?");
 
         if(confirm){
             // Delete the selected employee
@@ -138,7 +144,8 @@ public class Controller {
                         SortManager.sortBySalary();
                     else if(orderComboBox.getValue().equals("Hire Date"))
                         SortManager.sortByHireDate();
-                    AlertManager.showInformation("Información Actualizada!","Información actualizada correctamente.");
+                    AlertManager.showInformation("Información Actualizada!",
+                                                 "Información actualizada correctamente.");
                     regListView.refresh();
                 }
                 catch(IllegalArgumentException e){
@@ -149,7 +156,8 @@ public class Controller {
             // Logic if class changed to Manager
             else if (typeComboBox.getValue().equals("Manager")) {
                 try {
-                    Manager updatedReg = new Manager(selected.getId(), selected.getName(), selected.getLastname(), selected.getDate(), selected.getSalary(), titleField.getText());
+                    Manager updatedReg = new Manager(selected.getId(), selected.getName(), selected.getLastname(), 
+                                                     selected.getDate(), selected.getSalary(), titleField.getText());
                     int index = employees.indexOf(selected);
                     employees.remove(selected);
                     employees.add(index, updatedReg);
@@ -162,7 +170,8 @@ public class Controller {
             // Logic if class changed to employee
             else if (typeComboBox.getValue().equals("Employee")) {
                 try {
-                    Employee updatedReg = new Employee(selected.getId(), selected.getName(), selected.getLastname(), selected.getDate(), selected.getSalary());
+                    Employee updatedReg = new Employee(selected.getId(), selected.getName(), selected.getLastname(),
+                                                       selected.getDate(), selected.getSalary());
                     int index = employees.indexOf(selected);
                     employees.remove(selected);
                     employees.add(index, updatedReg);
@@ -188,8 +197,9 @@ public class Controller {
                 counter++;
                 newRegCounter++;
             }
-            if (counter > 10000) {
-                AlertManager.showWarning("Error Fatal!", "Número máximo de IDs alcanzados, elimina los registros anteriores antes de crear uno nuevo");
+            if (counter > 9999) {
+                AlertManager.showWarning("Error Fatal!", 
+                                         "Número máximo de IDs alcanzados, elimina los registros previos antes de crear uno nuevo");
                 return;                
             }
         }
@@ -203,17 +213,33 @@ public class Controller {
     @FXML
     void exportData(ActionEvent event){
         String selectedFormat = formatCombobox.getValue();
+        String filename = "employeesData";
+
         if(selectedFormat.equals("CSV")){
-            ExportManager.exportCSV("employeesData2.csv");
+            filename += CSVExportsCounter;
+            ExportManager.exportCSV(filename + ".csv");
+            CSVExportsCounter++;
         }
         else if(selectedFormat.equals("XML")){
-            ExportManager.exportXML("employeesData.xml");
+            if(XMLExportsCounter > 1) {
+                filename += XMLExportsCounter;
+            }
+            ExportManager.exportXML(filename + ".xml");
+            XMLExportsCounter++;
         }
         else if(selectedFormat.equals("JSON")){
-            ExportManager.exportJSON("employeesData.json");
+            if(JSONExportsCounter > 1) {
+                filename += JSONExportsCounter;
+            }
+            ExportManager.exportJSON(filename + ".json");
+            JSONExportsCounter++;
         }
-        else if (selectedFormat.equals("Archivo de texto")) {
-            ExportManager.exportFinalReport("employeesData.txt");
+        else if(selectedFormat.equals("Archivo de texto")) {
+            if(finalReportExportsCounter > 1) {
+                filename += finalReportExportsCounter;
+            }
+            ExportManager.exportFinalReport(filename + ".txt");
+            finalReportExportsCounter++;
         }
         else if(selectedFormat.equals("Consola (Completo)")){
             ConsoleManager.exportToConsole();
@@ -322,8 +348,7 @@ public class Controller {
             }
         );
  
-
-        if (comissionField != null) {
+        if(comissionField != null){
             comissionField.setEditable(false);
         }
 
@@ -406,7 +431,7 @@ public class Controller {
         );  
 
         // Cell factory for cells in listview
-        regListView.setCellFactory(_ -> new ListCell<Employee>() {
+        regListView.setCellFactory(_ -> new ListCell<Employee>(){
             @Override
             protected void updateItem(Employee item, boolean empty){
                 super.updateItem(item, empty);
@@ -422,7 +447,6 @@ public class Controller {
 
     
     
-
 
 
 

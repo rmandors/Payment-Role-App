@@ -43,14 +43,15 @@ public class Manager extends Employee {
     }
 
     public float getCommission(){
-        return Math.round(getSalary() * commissionRate * 100) / 100f;
+        return Math.round(getSalary() * commissionRate * 100) / 100.0f;
     }
 
     // toString method
     @Override 
     public String toString(){
         return super.toString().replace("]", "") 
-               + ", " + "Education Level: " + getEducationLevel() + "]";
+               + ", " + "Education Level: " + getEducationLevel() 
+               + ", " + "Commission: " + getCommission() + "]";
     }
 
     // Comparable
