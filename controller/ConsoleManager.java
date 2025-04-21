@@ -17,7 +17,7 @@ public class ConsoleManager {
 
     static void searchForUserId(){
         try(Scanner scanner = new Scanner(System.in)){
-            System.out.println("Introduzca el ID del empleado que desea buscar:");
+            System.out.println("Introduzca el ID del empleado que desea buscar: ");
 
             int id = Integer.parseInt(scanner.nextLine());
             boolean found = false;
