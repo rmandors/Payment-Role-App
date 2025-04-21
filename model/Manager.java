@@ -7,10 +7,15 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;  
 import javax.xml.bind.annotation.XmlRootElement;  
 
-@XmlRootElement(name="manager") 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Manager extends Employee {
     private String educationLevel;
     private final float commissionRate = 0.05f;
+
+    public Manager(){
+        super();
+    }
 
     public Manager(int i, String n, String ln, Date hd, float s, String el){
         super(i, n, ln, hd, s);
@@ -24,7 +29,7 @@ public class Manager extends Employee {
             throw new IllegalArgumentException("Invalid Education Level!");
     }
 
-    @XmlElement
+    @XmlElement(name="educationLevel")
     public String getEducationLevel(){
         return educationLevel;
     }
