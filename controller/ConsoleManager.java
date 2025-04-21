@@ -9,7 +9,7 @@ public class ConsoleManager {
     
     static void exportToConsole(){
         System.out.println("\nListado de Empleados:");
-        for(int i = 0; i < Controller.employees.size(); i++){
+        for (int i = 0; i < Controller.employees.size(); i++) {
             System.out.println(Controller.employees.get(i).toString());
         }
         return;
@@ -17,7 +17,7 @@ public class ConsoleManager {
 
     static void searchForUserId(){
         try(Scanner scanner = new Scanner(System.in)){
-            System.out.println("Introduzca el ID del empleado que desea buscar: ");
+            System.out.println("Introduzca el ID del empleado que desea buscar:");
 
             int id = Integer.parseInt(scanner.nextLine());
             boolean found = false;
@@ -38,12 +38,19 @@ public class ConsoleManager {
                 System.out.println(s.toString());
 
                 System.out.println("\nReporte mensual:");
+                float totalSalary = 0;
+
+                System.out.printf("%-4s | %-10s | %-10s | %-4s | %-10s | %-10s%n", 
+                                 "ID", "Nombre", "Apellido", "IESS", "Imp. Renta", "Liquido");
+
                 if(s.getClass() == Manager.class)
-                    System.out.printf("%s,%s,%s,%s,%s,%s%n", s.getId(), s.getName(), s.getLastname(), 
-                             s.getHireDate(), s.getSalary(), ((Manager)s).getEducationLevel());
+                    totalSalary = s.getSalary() + ((Manager)s).getCommission();
                 else
-                    System.out.printf("%s,%s,%s,%s,%s,%s%n", s.getId(), s.getName(), s.getLastname(), 
-                             s.getHireDate(), s.getSalary(), "none");
+                    totalSalary = s.getSalary();
+
+                System.out.printf("%-4s | %-10s | %-10s | %-4s | %-10s | %-5s %s%n", s.getId(), 
+                                  s.getName(), s.getLastname(), CalcManager.calcIESS(totalSalary), CalcManager.calcImpRent(totalSalary), 
+                                  CalcManager.calcLiquidSalary(totalSalary), CalcManager.salaryToString(CalcManager.calcLiquidSalary(totalSalary)));
             }
             else
                 System.out.println("No se ha encontrado ningún empleado con el ID: " + id);
