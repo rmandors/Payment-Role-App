@@ -14,11 +14,14 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;  
 
 @SuppressWarnings("deprecation")
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.PROPERTY)
 @XmlRootElement(name="employee")
 @XmlSeeAlso(Manager.class)
 public class Employee implements Comparable<Employee>{
+    
+    @XmlTransient
     private IntegerProperty id = new SimpleIntegerProperty();
+
     private String name;
     private String lastname;
     private Date hireDate;

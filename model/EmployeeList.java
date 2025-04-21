@@ -7,27 +7,34 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlTransient;
 
 @XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.PROPERTY)
+@XmlSeeAlso({Manager.class})
 public class EmployeeList{
-    private List<Employee> employees;
-
-    public EmployeeList(){} 
-
-    public EmployeeList(List<Employee> e){
-        setEmployees(e);
-    }
-
-    public void setEmployees(List<Employee> e){
-        employees = e;
-    }
 
     @XmlElements({
         @XmlElement(name="employee", type=Employee.class),
         @XmlElement(name="manager", type=Manager.class)
     })
+
+    private List<Employee> employees;
+
+    public EmployeeList(){} 
+
+    public EmployeeList(List<Employee> e){
+        this.employees = e;
+    }
+
+/*     @XmlTransient
+    public void setEmployees(List<Employee> e){
+        this.employees = e;
+    }
+
+    @XmlTransient
     public List<Employee> getEmployees(){
         return employees;
-    }
+    } */
 }

@@ -5,10 +5,12 @@ import java.util.Date;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;  
-import javax.xml.bind.annotation.XmlRootElement;  
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;  
 
 @XmlRootElement(name="manager")
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.PROPERTY)
+
 public class Manager extends Employee {
     private String educationLevel;
     private final float commissionRate = 0.05f;
