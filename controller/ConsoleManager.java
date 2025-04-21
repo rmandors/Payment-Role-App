@@ -33,7 +33,7 @@ public class ConsoleManager {
             }
 
             if(found){
-                Employee s = Controller.employees.get(id);
+                Employee s = Controller.employees.get(index);
 
                 System.out.println("El ID ha sido encontrado!");
                 System.out.println("Información del empleado: ");
