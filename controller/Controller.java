@@ -56,6 +56,11 @@ import org.json.simple.parser.ParseException;
 public class Controller {
 
     private int newRegCounter = 1;
+    private int CSVExportsCounter = 2;
+    private int XMLExportsCounter = 1;
+    private int JSONExportsCounter = 1;
+    private int finalReportExportsCounter = 1;
+    
     private static String[] typeOptions = {"Employee","Manager"};     
     private static String[] formatOptions = {"CSV","XML","JSON","Archivo de texto","Consola (Completo)", "Consola (Unitario)"};       
     private static String[] orderOptions = {"Lastname","Salary","Hire Date"}; 
@@ -209,17 +214,33 @@ public class Controller {
     @FXML
     void exportData(ActionEvent event){
         String selectedFormat = formatCombobox.getValue();
+        String filename = "employeesData";
+
         if(selectedFormat.equals("CSV")){
-            ExportManager.exportCSV("employeesData2.csv");
+            filename += CSVExportsCounter;
+            ExportManager.exportCSV(filename + ".csv");
+            CSVExportsCounter++;
         }
         else if(selectedFormat.equals("XML")){
-            ExportManager.exportXML("employeesData.xml");
+            if(XMLExportsCounter > 1) {
+                filename += XMLExportsCounter;
+            }
+            ExportManager.exportXML(filename + ".xml");
+            XMLExportsCounter++;
         }
         else if(selectedFormat.equals("JSON")){
-            ExportManager.exportJSON("employeesData.json");
+            if(JSONExportsCounter > 1) {
+                filename += JSONExportsCounter;
+            }
+            ExportManager.exportJSON(filename + ".json");
+            JSONExportsCounter++;
         }
-        else if (selectedFormat.equals("Archivo de texto")) {
-            ExportManager.exportFinalReport("employeesData.txt");
+        else if(selectedFormat.equals("Archivo de texto")) {
+            if(finalReportExportsCounter > 1) {
+                filename += finalReportExportsCounter;
+            }
+            ExportManager.exportFinalReport(filename + ".txt");
+            finalReportExportsCounter++;
         }
         else if(selectedFormat.equals("Consola (Completo)")){
             ConsoleManager.exportToConsole();
@@ -410,11 +431,3 @@ public class Controller {
     }
 
 }
-
-    
-    
-
-
-
-
-
