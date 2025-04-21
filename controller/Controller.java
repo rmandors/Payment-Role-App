@@ -218,8 +218,14 @@ public class Controller {
         else if(selectedFormat.equals("JSON")){
             ExportManager.exportJSON("employeesData.json");
         }
-        else if(selectedFormat.equals("Consola")){
+        else if (selectedFormat.equals("Archivo de texto")) {
+            ExportManager.exportFinalReport("employeesData.txt");
+        }
+        else if(selectedFormat.equals("Consola (Completo)")){
             ConsoleManager.exportToConsole();
+        }
+        else if(selectedFormat.equals("Consola (Unitario)")){
+            ConsoleManager.searchForUserId();
         }
     }
 
@@ -299,7 +305,8 @@ public class Controller {
 
         formatCombobox.getItems().addAll(formatItems);
         formatCombobox.setValue("CSV");
-        //GUIObservers.formatObserver(this, formatCombobox);
+
+
 
         orderComboBox.getItems().addAll(orderItems);
         orderComboBox.setValue("Default");

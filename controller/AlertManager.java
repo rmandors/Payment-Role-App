@@ -15,6 +15,7 @@ public class AlertManager {
         alert.showAndWait();
     }
 
+    // Function to show confirmation dialog
     static boolean showConfirmation(String title, String content) {
         Alert alert = new Alert(AlertType.CONFIRMATION, content, ButtonType.YES, ButtonType.CANCEL);
         alert.setTitle(title);
@@ -29,6 +30,7 @@ public class AlertManager {
 
     }
 
+    // Function to show information dialog
     static void showInformation(String title, String content) {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle(title);

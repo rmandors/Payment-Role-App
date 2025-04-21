@@ -18,18 +18,21 @@ public class ConsoleManager {
 
             int id = Integer.parseInt(scanner.nextLine());
             boolean found = false;
+            int index = -1;
 
             for(int i = 0; i < Controller.employees.size(); i++) {
                 if (Controller.employees.get(i).getId() == id) {
-                    System.out.println(Controller.employees.get(i).toString());
+                    //System.out.println(Controller.employees.get(i).toString());
                     found = true;
+                    index = i;
+                    break;
                 }
             }
 
             if(found){
                 System.out.println("El usuario ha sido encontrado!");
                 System.out.println("Informacion del empleado: ");
-                System.out.println(Controller.employees.get(id).toString());
+                System.out.println(Controller.employees.get(index).toString());
             }
             else
                 System.out.println("No se ha encontrado ningún empleado con el ID: " + id);

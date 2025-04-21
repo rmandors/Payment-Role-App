@@ -21,6 +21,7 @@ import model.Manager;
 
 public class ExportManager {
 
+    // Exports employees list to XML
     static void exportXML(String fileName){
         try{
             JAXBContext contextObj = JAXBContext.newInstance(EmployeeList.class);
@@ -38,6 +39,7 @@ public class ExportManager {
         }
     }
 
+    // Exports employees list to JSON
     @SuppressWarnings({"deprecation", "unchecked"})
     static void exportJSON(String fileName){
         try(FileWriter file = new FileWriter(fileName)){
@@ -72,6 +74,7 @@ public class ExportManager {
         }
     }
 
+    // Exports IESS to 
     static void exportFinalReport(String filename){
         try(Formatter output = new Formatter(new File(filename))){
             SortManager.sortByLastname();
