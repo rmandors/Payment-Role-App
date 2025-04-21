@@ -28,13 +28,4 @@ public class EmployeeList{
         this.employees = e;
     }
 
-/*     @XmlTransient
-    public void setEmployees(List<Employee> e){
-        this.employees = e;
-    }
-
-    @XmlTransient
-    public List<Employee> getEmployees(){
-        return employees;
-    } */
 }
