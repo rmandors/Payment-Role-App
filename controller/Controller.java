@@ -100,7 +100,7 @@ public class Controller {
 
         if (regListView.getSelectionModel().getSelectedItem() == null) return;
         boolean confirm = AlertManager.showConfirmation("Eliminar Registro",
-                                                "¿Estás seguro que deseas eliminar este registro?");
+                                                        "¿Estás seguro que deseas eliminar este registro?");
 
         if(confirm){
             // Delete the selected employee
@@ -157,7 +157,7 @@ public class Controller {
                     else if(orderComboBox.getValue().equals("Hire Date"))
                         SortManager.sortByHireDate();
                     AlertManager.showInformation("Información Actualizada!",
-                                         "Información actualizada correctamente.");
+                                                 "Información actualizada correctamente.");
                     regListView.refresh();
                 }
                 catch(IllegalArgumentException e){
@@ -207,7 +207,7 @@ public class Controller {
             }
             if (counter > 9999) {
                 AlertManager.showWarning("Error Fatal!", 
-                                        "Número máximo de IDs alcanzados, elimina los registros previos antes de crear uno nuevo");
+                                         "Número máximo de IDs alcanzados, elimina los registros previos antes de crear uno nuevo");
                 return;                
             }
         }
@@ -332,8 +332,6 @@ public class Controller {
         formatCombobox.getItems().addAll(formatItems);
         formatCombobox.setValue("CSV");
 
-
-
         orderComboBox.getItems().addAll(orderItems);
         orderComboBox.setValue("Default");
 
@@ -348,7 +346,7 @@ public class Controller {
             }
         );
  
-        if (comissionField != null) {
+        if(comissionField != null){
             comissionField.setEditable(false);
         }
 
@@ -423,7 +421,7 @@ public class Controller {
             }
         );  
 
-        regListView.setCellFactory(lv -> new ListCell<Employee>() {
+        regListView.setCellFactory(lv -> new ListCell<Employee>(){
             @Override
             protected void updateItem(Employee item, boolean empty){
                 super.updateItem(item, empty);
