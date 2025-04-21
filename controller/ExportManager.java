@@ -77,7 +77,6 @@ public class ExportManager {
     // Exports IESS table to text file
     static void exportFinalReport(String filename){
         try(Formatter output = new Formatter(new File(filename))){
-            SortManager.sortByLastname();
             output.format("%-4s | %-10s | %-10s | %-4s | %-10s | %-10s%n", 
                          "ID", "Nombre", "Apellido", "IESS", "Imp. Renta", "Liquido");
 
@@ -124,7 +123,6 @@ public class ExportManager {
         }
     }
 
-    
     // Reads the Employee data from a CSV file and load it into an ObservableList. Runs at the start of the program
     static void importCSV(String fileName){
         try(BufferedReader reader = new BufferedReader(new FileReader(fileName))){
