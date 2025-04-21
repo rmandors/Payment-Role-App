@@ -78,7 +78,7 @@ public class Employee implements Comparable<Employee>{
     }
 
     public void setHireDate(Date hd){
-        if(hd.getYear() > 1975)
+        if(hd.getYear() >= 1975 && hd.getYear() <= 2025)
             hireDate = hd;
         else
             throw new IllegalArgumentException("Fecha de contratación inválida!");
