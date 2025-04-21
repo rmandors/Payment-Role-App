@@ -150,6 +150,7 @@ public class Controller {
                         SortManager.sortBySalary();
                     else if(orderComboBox.getValue().equals("Hire Date"))
                         SortManager.sortByHireDate();
+                    AlertManager.showInformation("Información Actualizada!","Información actualizada correctamente.");
                     regListView.refresh();
                 }
                 catch(IllegalArgumentException e){
@@ -282,10 +283,14 @@ public class Controller {
             (ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
                 if (newValue.equals("Employee")) {
                     titleField.setEditable(false);
+                    titleField.setDisable(true);
+                    comissionField.setDisable(true);
                     titleField.setText("none");
                     comissionField.setText("0");
                 } 
                 else if (newValue.equals("Manager")) {
+                    titleField.setDisable(false);
+                    comissionField.setDisable(false);
                     titleField.setEditable(true);
                     titleField.clear();
                 }

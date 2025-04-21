@@ -10,6 +10,7 @@ public class AlertManager {
     static void showWarning(String title, String content) {
         Alert alert = new Alert(AlertType.WARNING);
         alert.setTitle(title);
+        alert.setHeaderText(title);
         alert.setContentText(content);
         alert.showAndWait();
     }
@@ -17,6 +18,7 @@ public class AlertManager {
     static boolean showConfirmation(String title, String content) {
         Alert alert = new Alert(AlertType.CONFIRMATION, content, ButtonType.YES, ButtonType.CANCEL);
         alert.setTitle(title);
+        alert.setHeaderText(title);
         alert.showAndWait();
 
         if (alert.getResult() == ButtonType.YES) {
@@ -25,5 +27,13 @@ public class AlertManager {
         
         return false;
 
+    }
+
+    static void showInformation(String title, String content) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setContentText(content);
+        alert.setHeaderText(title);
+        alert.showAndWait();
     }
 }
