@@ -49,8 +49,9 @@ public class ConsoleManager {
                     totalSalary = s.getSalary();
 
                 System.out.printf("%-4s | %-10s | %-10s | %-4s | %-10s | %-5s %s%n", s.getId(), 
-                                  s.getName(), s.getLastname(), CalcManager.calcIESS(totalSalary), CalcManager.calcImpRent(totalSalary), 
-                                  CalcManager.calcLiquidSalary(totalSalary), CalcManager.salaryToString(CalcManager.calcLiquidSalary(totalSalary)));
+                                  s.getName(), s.getLastname(), CalcManager.calcIESS(totalSalary), 
+                                  CalcManager.calcImpRent(totalSalary), CalcManager.calcLiquidSalary(totalSalary), 
+                                  CalcManager.salaryToString(CalcManager.calcLiquidSalary(totalSalary)));
             }
             else
                 System.out.println("No se ha encontrado ningún empleado con el ID: " + id);
