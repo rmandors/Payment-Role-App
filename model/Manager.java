@@ -28,7 +28,7 @@ public class Manager extends Employee {
         if(el.length() > 0)
         educationLevel = el;
         else
-            throw new IllegalArgumentException("Invalid Education Level!");
+            throw new IllegalArgumentException("Nivel de educación inválido!");
     }
 
     @XmlElement(name="educationLevel")
