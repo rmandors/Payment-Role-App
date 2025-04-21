@@ -31,7 +31,7 @@ public class ExportManager {
 
             marshallerObj.marshal(employeesList, new FileOutputStream(fileName));
 
-            System.out.println("XML file written successfully!");
+            AlertManager.showInformation("Archivo creado!", "El archivo XML ha sido exportado correctamente.");
         }
         catch(Exception e){
             e.printStackTrace();
@@ -65,6 +65,7 @@ public class ExportManager {
     
             file.write(employeesArray.toJSONString());
             file.flush();
+            AlertManager.showInformation("Archivo creado!", "El archivo JSON ha sido exportado correctamente.");
         }
         catch(IOException e){
             e.printStackTrace();
@@ -111,6 +112,7 @@ public class ExportManager {
                 output.format("%s,%s,%s,%s,%s,%s%n", s.getId(), s.getName(), s.getLastname(), 
                              s.getHireDate(), s.getSalary(), "none");
             }
+            AlertManager.showInformation("Archivo creado!", "El archivo CSV ha sido exportado correctamente.");
         }
         catch(IOException e){
             e.printStackTrace();
@@ -146,7 +148,8 @@ public class ExportManager {
                 else
                     employee = new Manager(id, name, lastname, hireDate, salary, educationLevel);
                 
-                Controller.employees.add(employee);                
+                Controller.employees.add(employee);
+                //AlertManager.showInformation("Registros importados!", "Se ha importado el archivo CSV correctamente.");                
             }
         } 
         catch(IOException e){
@@ -183,6 +186,7 @@ public class ExportManager {
                 
                 Controller.employees.add(employee);                
             }
+            AlertManager.showInformation("Registros importados!", "Se ha importado el archivo CSV correctamente.");
         } 
         catch(IOException e){
             e.printStackTrace();
