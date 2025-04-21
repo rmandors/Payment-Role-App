@@ -60,7 +60,7 @@ public class Manager extends Employee {
         float totalPayment = getSalary() + getCommission();
         float rightTotalPayment = 0;
 
-        if(right.getClass() != Manager.class)
+        if(right.getClass() == Manager.class)
             rightTotalPayment = right.getSalary() + ((Manager)right).getCommission();
         else
             rightTotalPayment = right.getSalary();            
