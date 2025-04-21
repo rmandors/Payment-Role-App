@@ -50,7 +50,8 @@ public class Manager extends Employee {
     @Override 
     public String toString(){
         return super.toString().replace("]", "") 
-               + ", " + "Education Level: " + getEducationLevel() + "]";
+               + ", " + "Education Level: " + getEducationLevel() 
+               + ", " + "Commission: " + getCommission() + "]";
     }
 
     // Comparable
