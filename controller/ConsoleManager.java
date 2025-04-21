@@ -21,7 +21,7 @@ public class ConsoleManager {
 
     // Search and print by id
     static void searchForUserId(){
-        System.out.println("Introduzca el ID del empleado que desea buscar: ");
+        System.out.print("Introduzca el ID del empleado que desea buscar: ");
 
         int id = Integer.parseInt(scanner.nextLine());
         boolean found = false;
@@ -39,7 +39,7 @@ public class ConsoleManager {
         if(found){
             Employee s = Controller.employees.get(index);
 
-            System.out.println("El ID ha sido encontrado!");
+            System.out.println("\nEl ID ha sido encontrado!");
             System.out.println("Información del empleado: ");
             System.out.println(s.toString());
 
@@ -63,7 +63,7 @@ public class ConsoleManager {
                                 CalcManager.salaryToString(CalcManager.calcLiquidSalary(totalSalary)));
         }
         else
-            System.out.println("No se ha encontrado ningún empleado con el ID: " + id);
+            System.out.println("\nNo se ha encontrado ningún empleado con el ID: " + id);
     }
 
 }
