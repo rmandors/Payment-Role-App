@@ -38,7 +38,7 @@ public class ExportManager {
         }
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"deprecation", "unchecked"})
     static void exportJSON(String fileName){
         try(FileWriter file = new FileWriter(fileName)){
             JSONArray employeesArray = new JSONArray();
