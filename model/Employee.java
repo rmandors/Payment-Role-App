@@ -7,12 +7,16 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;  
 import javax.xml.bind.annotation.XmlElement;  
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlTransient;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;  
 
 @SuppressWarnings("deprecation")
-@XmlRootElement(name="employee") 
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name="employee")
+@XmlSeeAlso(Manager.class)
 public class Employee implements Comparable<Employee>{
     private IntegerProperty id = new SimpleIntegerProperty();
     private String name;
@@ -37,7 +41,7 @@ public class Employee implements Comparable<Employee>{
             throw new IllegalArgumentException("Invalid ID. Must be beetween: 1-9999!");
     }
 
-    @XmlElement
+    @XmlElement(name="id")
     public int getId(){
         return id.get();
     }
@@ -49,7 +53,7 @@ public class Employee implements Comparable<Employee>{
             throw new IllegalArgumentException("Invalid Name length!");
     }
 
-    @XmlElement
+    @XmlElement(name="name")
     public String getName(){
         return name;
     }
@@ -61,7 +65,7 @@ public class Employee implements Comparable<Employee>{
             throw new IllegalArgumentException("Invalid Lastname length!");
     }
 
-    @XmlElement
+    @XmlElement(name="lastname")
     public String getLastname(){
         return lastname;
     }
@@ -73,7 +77,7 @@ public class Employee implements Comparable<Employee>{
             throw new IllegalArgumentException("Invalid Hire Date!");
     }
 
-    @XmlElement
+    @XmlElement(name="hireDate")
     public String getHireDate(){
         return hireDate.getYear() + "-" +
                (hireDate.getMonth() + 1)+ "-" +
@@ -95,7 +99,7 @@ public class Employee implements Comparable<Employee>{
         return id;
     };
 
-    @XmlElement
+    @XmlElement(name="salary")
     public float getSalary(){
         return salary;
     }
