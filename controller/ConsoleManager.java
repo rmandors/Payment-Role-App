@@ -8,8 +8,8 @@ import model.Manager;
 public class ConsoleManager {
     
     static void exportToConsole(){
-        System.out.println("\nListado de Empleados:");
-        for (int i = 0; i < Controller.employees.size(); i++) {
+        System.out.println("\nListado de Empleados: ");
+        for(int i = 0; i < Controller.employees.size(); i++){
             System.out.println(Controller.employees.get(i).toString());
         }
         return;
@@ -37,7 +37,7 @@ public class ConsoleManager {
                 System.out.println("Información del empleado: ");
                 System.out.println(s.toString());
 
-                System.out.println("\nReporte mensual:");
+                System.out.println("\nReporte mensual: ");
                 float totalSalary = 0;
 
                 System.out.printf("%-4s | %-10s | %-10s | %-4s | %-10s | %-10s%n", 
