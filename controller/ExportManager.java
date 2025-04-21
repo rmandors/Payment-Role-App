@@ -38,7 +38,7 @@ public class ExportManager {
         }
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"deprecation", "unchecked"})
     static void exportJSON(String fileName){
         try(FileWriter file = new FileWriter(fileName)){
             JSONArray employeesArray = new JSONArray();
@@ -154,38 +154,4 @@ public class ExportManager {
         }
     }
 
-    static void importCSV(File fileName){
-        try(BufferedReader reader = new BufferedReader(new FileReader(fileName))){
-            String line;
-
-            reader.readLine(); // Skip header
-
-            while((line = reader.readLine()) != null){
-                String[] data = line.split(",");
-
-                int id = Integer.parseInt(data[0]);
-                String name = data[1];
-                String lastname = data[2];
-                float salary = Float.parseFloat(data[4]);
-                String educationLevel = data[5];
-
-                String[] dateData = data[3].split("-");
-                int year = Integer.parseInt(dateData[0]);
-                int month = Integer.parseInt(dateData[1]) - 1; // Month is 0-based
-                int day = Integer.parseInt(dateData[2]);
-                Date hireDate = new Date(year, month, day);
-
-                Employee employee;
-                if (educationLevel.equals("none"))
-                    employee = new Employee(id, name, lastname, hireDate, salary);
-                else
-                    employee = new Manager(id, name, lastname, hireDate, salary, educationLevel);
-                
-                Controller.employees.add(employee);                
-            }
-        } 
-        catch(IOException e){
-            e.printStackTrace();
-        }
-    }
 }
