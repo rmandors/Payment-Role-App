@@ -30,6 +30,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
@@ -219,20 +221,33 @@ public class Controller {
 
     @FXML
     void importData(ActionEvent event){ 
-        Employee selected = regListView.getSelectionModel().getSelectedItem();
-        if(selected != null){
-            fullNameField.setText("Nombre y Apellido");
-            idField.clear();
-            nameField.clear();
-            lastnameField.clear();
-            datePicker.setValue(null);
-            salaryField.clear();
-            titleField.clear();
-            comissionField.clear();
+        
+        FileChooser csvChooser = new FileChooser();
+        FileChooser.ExtensionFilter csvFilter = new FileChooser.ExtensionFilter("Archivos CSV", "*.csv");
+        Stage mainStage = (Stage) fullNameField.getScene().getWindow();
+        
+        csvChooser.setTitle("Importar CSV");
+        csvChooser.getExtensionFilters().add(csvFilter);
+        csvChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+        File selectionFile = csvChooser.showOpenDialog(mainStage);
+
+        if (selectionFile != null) {
+            Employee selected = regListView.getSelectionModel().getSelectedItem();
+            if(selected != null){
+                fullNameField.setText("Nombre y Apellido");
+                idField.clear();
+                nameField.clear();
+                lastnameField.clear();
+                datePicker.setValue(null);
+                salaryField.clear();
+                titleField.clear();
+                comissionField.clear();
+            }
+            employees.clear();
+            importCSV(selectionFile);
+            orderComboBox.setValue("Default");
         }
-        employees.clear();
-        importCSV("employeesData.csv");
-        orderComboBox.setValue("Default");
+        
     }
 
     public void initialize(){
@@ -381,6 +396,43 @@ public class Controller {
             e.printStackTrace();
         }
     }
+
+    private static void importCSV(File fileName){
+        try(BufferedReader reader = new BufferedReader(new FileReader(fileName))){
+            String line;
+
+            reader.readLine(); // Skip header
+
+            while((line = reader.readLine()) != null){
+                String[] data = line.split(",");
+
+                int id = Integer.parseInt(data[0]);
+                String name = data[1];
+                String lastname = data[2];
+                float salary = Float.parseFloat(data[4]);
+                String educationLevel = data[5];
+
+                String[] dateData = data[3].split("-");
+                int year = Integer.parseInt(dateData[0]);
+                int month = Integer.parseInt(dateData[1]) - 1; // Month is 0-based
+                int day = Integer.parseInt(dateData[2]);
+                Date hireDate = new Date(year, month, day);
+
+                Employee employee;
+                if (educationLevel.equals("none"))
+                    employee = new Employee(id, name, lastname, hireDate, salary);
+                else
+                    employee = new Manager(id, name, lastname, hireDate, salary, educationLevel);
+                
+                employees.add(employee);                
+            }
+        } 
+        catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+
 
     // Writes the Employee ObservableList to a CSV file using Formatter
     private static void exportCSV(String fileName){
