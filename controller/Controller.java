@@ -57,7 +57,7 @@ public class Controller {
 
     private int newRegCounter = 1;
     private static String[] typeOptions = {"Employee","Manager"};     
-    private static String[] formatOptions = {"CSV","XML","JSON"};       
+    private static String[] formatOptions = {"CSV","XML","JSON","Consola"};       
     private static String[] orderOptions = {"Lastname","Salary","Hire Date"}; 
  
     static ObservableSet<Integer> idSet = FXCollections.observableSet();
@@ -94,7 +94,7 @@ public class Controller {
     void deleteReg(ActionEvent event) {
 
         if (regListView.getSelectionModel().getSelectedItem() == null) return;
-        boolean confirm = showConfirmation("Eliminar Registro", "¿Estás seguro que deseas eliminar este registro?");
+        boolean confirm = AlertManager.showConfirmation("Eliminar Registro", "¿Estás seguro que deseas eliminar este registro?");
 
         if(confirm){
             // Delete the selected employee
@@ -153,7 +153,7 @@ public class Controller {
                     regListView.refresh();
                 }
                 catch(IllegalArgumentException e){
-                    showWarning("Entrada invalida!", e.getMessage());
+                    AlertManager.showWarning("Entrada invalida!", e.getMessage());
                 }
 
             }
@@ -166,7 +166,7 @@ public class Controller {
                     regListView.refresh();
                     regListView.getSelectionModel().select(index);
                 } catch (IllegalArgumentException e) {
-                    showWarning("Entrada invalida!", e.getMessage());
+                    AlertManager.showWarning("Entrada invalida!", e.getMessage());
                 }
             }
             else if (typeComboBox.getValue().equals("Employee")) {
@@ -178,7 +178,7 @@ public class Controller {
                     regListView.refresh();
                     regListView.getSelectionModel().select(index);
                 } catch (Exception e) {
-                    showWarning("Entrada invalida!", e.getMessage());
+                    AlertManager.showWarning("Entrada invalida!", e.getMessage());
                 }
             }
             
@@ -196,7 +196,7 @@ public class Controller {
                 newRegCounter++;
             }
             if (counter > 10000) {
-                showWarning("Error Fatal!", "Número máximo de IDs alcanzados, elimina los registros anteriores antes de crear uno nuevo");
+                AlertManager.showWarning("Error Fatal!", "Número máximo de IDs alcanzados, elimina los registros anteriores antes de crear uno nuevo");
                 return;                
             }
         }
@@ -209,13 +209,16 @@ public class Controller {
     void exportData(ActionEvent event){
         String selectedFormat = formatCombobox.getValue();
         if(selectedFormat.equals("CSV")){
-            exportCSV("employeesData2.csv");
+            ExportManager.exportCSV("employeesData2.csv");
         }
         else if(selectedFormat.equals("XML")){
             ExportManager.exportXML("employeesData.xml");
         }
         else if(selectedFormat.equals("JSON")){
             ExportManager.exportJSON("employeesData.json");
+        }
+        else if(selectedFormat.equals("Consola")){
+            ConsoleManager.exportToConsole();
         }
     }
 
@@ -244,7 +247,7 @@ public class Controller {
                 comissionField.clear();
             }
             employees.clear();
-            importCSV(selectionFile);
+            ExportManager.importCSV(selectionFile);
             orderComboBox.setValue("Default");
         }
         
@@ -291,6 +294,7 @@ public class Controller {
 
         formatCombobox.getItems().addAll(formatItems);
         formatCombobox.setValue("CSV");
+        GUIObservers.formatObserver(this, formatCombobox);
 
         orderComboBox.getItems().addAll(orderItems);
         orderComboBox.setValue("Default");
@@ -310,10 +314,20 @@ public class Controller {
             comissionField.setEditable(false);
         }
 
-        importCSV("employeesData.csv");
+        ExportManager.importCSV("employeesData.csv");
         regListView.setItems(employees);
 
-        GUIObservers.validateObservers(this, regListView);
+        GUIObservers.idObserver(this, regListView);
+
+        typeComboBox.setDisable(true);
+        idField.setDisable(true);
+        nameField.setDisable(true);
+        lastnameField.setDisable(true);
+        salaryField.setDisable(true);
+        datePicker.setDisable(true);
+        titleField.setDisable(true);
+        comissionField.setDisable(true);
+
 
         // Update text fields when selecting an employee
         regListView.getSelectionModel().selectedItemProperty().addListener(
@@ -321,6 +335,14 @@ public class Controller {
                 @Override                                                     
                 public void changed(ObservableValue<? extends Employee> ov,Employee oldValue, Employee newValue){ 
                     if (newValue != null) {
+
+                        typeComboBox.setDisable(false);
+                        idField.setDisable(false);
+                        nameField.setDisable(false);
+                        lastnameField.setDisable(false);
+                        salaryField.setDisable(false);
+                        datePicker.setDisable(false);
+
                         fullNameField.setText(newValue.getName() + " " + newValue.getLastname());             
                         idField.setText(String.valueOf(newValue.getId()));
                         nameField.setText(newValue.getName());
@@ -334,15 +356,29 @@ public class Controller {
                         datePicker.setValue(hireDate);
                     
                         if(newValue.getClass() == Manager.class){
+                            titleField.setDisable(false);
+                            comissionField.setDisable(false);
                             typeComboBox.setValue("Manager");
                             titleField.setText(((Manager)newValue).getEducationLevel());
                             comissionField.setText(String.valueOf(((Manager)newValue).getCommission()));
                         }
                         else{
                             typeComboBox.setValue("Employee");
+                            titleField.setDisable(true);
+                            comissionField.setDisable(true);
                             titleField.setText("none");
                             comissionField.setText("0");
                         }
+                    }
+                    else {
+                        typeComboBox.setDisable(true);
+                        idField.setDisable(true);
+                        nameField.setDisable(true);
+                        lastnameField.setDisable(true);
+                        salaryField.setDisable(true);
+                        datePicker.setDisable(true);
+                        titleField.setDisable(true);
+                        comissionField.setDisable(true);
                     }
                     
                 }
@@ -361,118 +397,6 @@ public class Controller {
         });   
     }
 
-    // Reads the Employee data from a CSV file and load it into an ObservableList
-    private static void importCSV(String fileName){
-        try(BufferedReader reader = new BufferedReader(new FileReader(fileName))){
-            String line;
-
-            reader.readLine(); // Skip header
-
-            while((line = reader.readLine()) != null){
-                String[] data = line.split(",");
-
-                int id = Integer.parseInt(data[0]);
-                String name = data[1];
-                String lastname = data[2];
-                float salary = Float.parseFloat(data[4]);
-                String educationLevel = data[5];
-
-                String[] dateData = data[3].split("-");
-                int year = Integer.parseInt(dateData[0]);
-                int month = Integer.parseInt(dateData[1]) - 1; // Month is 0-based
-                int day = Integer.parseInt(dateData[2]);
-                Date hireDate = new Date(year, month, day);
-
-                Employee employee;
-                if (educationLevel.equals("none"))
-                    employee = new Employee(id, name, lastname, hireDate, salary);
-                else
-                    employee = new Manager(id, name, lastname, hireDate, salary, educationLevel);
-                
-                employees.add(employee);                
-            }
-        } 
-        catch(IOException e){
-            e.printStackTrace();
-        }
-    }
-
-    private static void importCSV(File fileName){
-        try(BufferedReader reader = new BufferedReader(new FileReader(fileName))){
-            String line;
-
-            reader.readLine(); // Skip header
-
-            while((line = reader.readLine()) != null){
-                String[] data = line.split(",");
-
-                int id = Integer.parseInt(data[0]);
-                String name = data[1];
-                String lastname = data[2];
-                float salary = Float.parseFloat(data[4]);
-                String educationLevel = data[5];
-
-                String[] dateData = data[3].split("-");
-                int year = Integer.parseInt(dateData[0]);
-                int month = Integer.parseInt(dateData[1]) - 1; // Month is 0-based
-                int day = Integer.parseInt(dateData[2]);
-                Date hireDate = new Date(year, month, day);
-
-                Employee employee;
-                if (educationLevel.equals("none"))
-                    employee = new Employee(id, name, lastname, hireDate, salary);
-                else
-                    employee = new Manager(id, name, lastname, hireDate, salary, educationLevel);
-                
-                employees.add(employee);                
-            }
-        } 
-        catch(IOException e){
-            e.printStackTrace();
-        }
-    }
-
-
-
-    // Writes the Employee ObservableList to a CSV file using Formatter
-    private static void exportCSV(String fileName){
-        try(Formatter output = new Formatter(new File(fileName))){
-            output.format("id,name,lastname,hireDate,salary,educationLevel%n");
-
-            for(Employee s : employees){
-            if(s.getClass() == Manager.class)
-                output.format("%s,%s,%s,%s,%s,%s%n", s.getId(), s.getName(), s.getLastname(), 
-                             s.getHireDate(), s.getSalary(), ((Manager)s).getEducationLevel());
-            else
-                output.format("%s,%s,%s,%s,%s,%s%n", s.getId(), s.getName(), s.getLastname(), 
-                             s.getHireDate(), s.getSalary(), "none");
-            }
-        }
-        catch(IOException e){
-            e.printStackTrace();
-        }
-    }
-
-    // Function to show warning alerts
-    static void showWarning(String title, String content) {
-        Alert alert = new Alert(AlertType.WARNING);
-        alert.setTitle(title);
-        alert.setContentText(content);
-        alert.showAndWait();
-    }
-
-    static boolean showConfirmation(String title, String content) {
-        Alert alert = new Alert(AlertType.CONFIRMATION, content, ButtonType.YES, ButtonType.CANCEL);
-        alert.setTitle(title);
-        alert.showAndWait();
-
-        if (alert.getResult() == ButtonType.YES) {
-            return true;
-        }
-        
-        return false;
-
-    }
 }
 
     

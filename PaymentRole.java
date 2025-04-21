@@ -4,16 +4,6 @@
 // Raymond Portilla - 00335050
 // Nicolas Tovar - 00332988
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Formatter;
-import java.util.Date;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

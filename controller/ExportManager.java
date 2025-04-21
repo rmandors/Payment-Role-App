@@ -1,9 +1,12 @@
 package controller;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Formatter;
 
 import javax.xml.bind.JAXBContext;
@@ -95,4 +98,94 @@ public class ExportManager {
         }
     }
 
+    // Writes the Employee ObservableList to a CSV file using Formatter
+    static void exportCSV(String fileName){
+        try(Formatter output = new Formatter(new File(fileName))){
+            output.format("id,name,lastname,hireDate,salary,educationLevel%n");
+
+            for(Employee s : Controller.employees){
+            if(s.getClass() == Manager.class)
+                output.format("%s,%s,%s,%s,%s,%s%n", s.getId(), s.getName(), s.getLastname(), 
+                             s.getHireDate(), s.getSalary(), ((Manager)s).getEducationLevel());
+            else
+                output.format("%s,%s,%s,%s,%s,%s%n", s.getId(), s.getName(), s.getLastname(), 
+                             s.getHireDate(), s.getSalary(), "none");
+            }
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    
+    // Reads the Employee data from a CSV file and load it into an ObservableList
+    static void importCSV(String fileName){
+        try(BufferedReader reader = new BufferedReader(new FileReader(fileName))){
+            String line;
+
+            reader.readLine(); // Skip header
+
+            while((line = reader.readLine()) != null){
+                String[] data = line.split(",");
+
+                int id = Integer.parseInt(data[0]);
+                String name = data[1];
+                String lastname = data[2];
+                float salary = Float.parseFloat(data[4]);
+                String educationLevel = data[5];
+
+                String[] dateData = data[3].split("-");
+                int year = Integer.parseInt(dateData[0]);
+                int month = Integer.parseInt(dateData[1]) - 1; // Month is 0-based
+                int day = Integer.parseInt(dateData[2]);
+                Date hireDate = new Date(year, month, day);
+
+                Employee employee;
+                if (educationLevel.equals("none"))
+                    employee = new Employee(id, name, lastname, hireDate, salary);
+                else
+                    employee = new Manager(id, name, lastname, hireDate, salary, educationLevel);
+                
+                Controller.employees.add(employee);                
+            }
+        } 
+        catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    static void importCSV(File fileName){
+        try(BufferedReader reader = new BufferedReader(new FileReader(fileName))){
+            String line;
+
+            reader.readLine(); // Skip header
+
+            while((line = reader.readLine()) != null){
+                String[] data = line.split(",");
+
+                int id = Integer.parseInt(data[0]);
+                String name = data[1];
+                String lastname = data[2];
+                float salary = Float.parseFloat(data[4]);
+                String educationLevel = data[5];
+
+                String[] dateData = data[3].split("-");
+                int year = Integer.parseInt(dateData[0]);
+                int month = Integer.parseInt(dateData[1]) - 1; // Month is 0-based
+                int day = Integer.parseInt(dateData[2]);
+                Date hireDate = new Date(year, month, day);
+
+                Employee employee;
+                if (educationLevel.equals("none"))
+                    employee = new Employee(id, name, lastname, hireDate, salary);
+                else
+                    employee = new Manager(id, name, lastname, hireDate, salary, educationLevel);
+                
+                Controller.employees.add(employee);                
+            }
+        } 
+        catch(IOException e){
+            e.printStackTrace();
+        }
+    }
 }
