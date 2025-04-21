@@ -78,7 +78,7 @@ public class Employee implements Comparable<Employee>{
     }
 
     public void setHireDate(Date hd){
-        if(hd.getYear() >= 1975 && hd.getYear() <= 2025)
+        if(hd.getYear() > 1975)
             hireDate = hd;
         else
             throw new IllegalArgumentException("Fecha de contratación inválida!");
@@ -96,8 +96,10 @@ public class Employee implements Comparable<Employee>{
     }
 
     public void setSalary(float s){
-        if(s >= 800 && s <= 3500)
+        if(s >= 800.0f && s <= 3500.0f){
+            s = Math.round(s * 100.0) / 100.0f;
             salary = s;
+        }
         else
             throw new IllegalArgumentException("Salario inválido. Su valor debe estar entre: 800-3500!");
     }
