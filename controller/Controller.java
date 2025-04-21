@@ -1,24 +1,13 @@
 package controller;
 
 import model.Employee;
-import model.EmployeeComparator;
-import model.EmployeeList;
 import model.Manager;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 
 import java.time.LocalDate;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.Formatter;
-import java.util.List;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -28,61 +17,56 @@ import javafx.collections.ObservableList;
 import javafx.collections.ObservableSet;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller; 
-import javax.xml.bind.Unmarshaller; 
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 @SuppressWarnings("deprecation")
 public class Controller {
 
+    // Declare combobox options
     private int newRegCounter = 1;
     private static String[] typeOptions = {"Employee","Manager"};     
     private static String[] formatOptions = {"CSV","XML","JSON","Archivo de texto","Consola (Completo)", "Consola (Unitario)"};       
     private static String[] orderOptions = {"Lastname","Salary","Hire Date"}; 
  
+    // Declare set of ids
     static ObservableSet<Integer> idSet = FXCollections.observableSet();
 
+    // Declare observables array lists
     static ObservableList<Employee> employees = FXCollections.observableArrayList();
     private static ObservableList<String> typeItems = FXCollections.observableArrayList(typeOptions);
     private static ObservableList<String> formatItems = FXCollections.observableArrayList(formatOptions);
     private static ObservableList<String> orderItems = FXCollections.observableArrayList(orderOptions);
 
+    // Declare fxml buttons
     @FXML Button deleteReg;
     @FXML Button exportData;
     @FXML Button importData;
     @FXML Button newReg;
     @FXML Button updateReg;
 
+    // Declare fxml comboboxes
     @FXML ComboBox<String> formatCombobox;
     @FXML ComboBox<String> orderComboBox;
     @FXML ComboBox<String> typeComboBox;
 
+    // Declare fxml date picker
     @FXML DatePicker datePicker;
 
+    // Declare fxml label
     @FXML Label fullNameField;
 
+    // Declare fxml list view
     @FXML ListView<Employee> regListView;
 
+    // Declare fxml text fields
     @FXML TextField idField;
     @FXML TextField comissionField;
     @FXML TextField lastnameField;
@@ -90,6 +74,7 @@ public class Controller {
     @FXML TextField salaryField;
     @FXML TextField titleField;
 
+    // Funtion to delete register
     @FXML
     void deleteReg(ActionEvent event) {
 
@@ -113,10 +98,12 @@ public class Controller {
         } 
     }
 
+    // Function to update register
     @FXML
     void updateReg(ActionEvent event){
         Employee selected = regListView.getSelectionModel().getSelectedItem();
         if(selected != null){
+            // Logic if class is not changed
             if (selected.getClass().getName().equals("model."+ typeComboBox.getValue())) {
                 try{
                     fullNameField.setText(nameField.getText()+" "+lastnameField.getText());
@@ -144,6 +131,7 @@ public class Controller {
                         comissionField.setText("0");
                     }   
 
+                    // Reorder after updating
                     if(orderComboBox.getValue().equals("Lastname")) 
                         SortManager.sortByLastname(); 
                     else if(orderComboBox.getValue().equals("Salary")) 
@@ -158,6 +146,7 @@ public class Controller {
                 }
 
             }
+            // Logic if class changed to Manager
             else if (typeComboBox.getValue().equals("Manager")) {
                 try {
                     Manager updatedReg = new Manager(selected.getId(), selected.getName(), selected.getLastname(), selected.getDate(), selected.getSalary(), titleField.getText());
@@ -170,6 +159,7 @@ public class Controller {
                     AlertManager.showWarning("Entrada invalida!", e.getMessage());
                 }
             }
+            // Logic if class changed to employee
             else if (typeComboBox.getValue().equals("Employee")) {
                 try {
                     Employee updatedReg = new Employee(selected.getId(), selected.getName(), selected.getLastname(), selected.getDate(), selected.getSalary());
@@ -187,8 +177,10 @@ public class Controller {
         }
     }
 
+    // Function to create a new registry
     @FXML
     void newReg(ActionEvent event){
+        // Logic for assigning lowest id
         if (idSet.contains(newRegCounter)) {
             newRegCounter = 1;
             int counter = 0;
@@ -201,11 +193,13 @@ public class Controller {
                 return;                
             }
         }
+        // Create new employee
         Employee newEmployee = new Employee(newRegCounter,"Unknown","Unknown",new Date(2025,3,21), 800);
         employees.add(newEmployee);
         regListView.selectionModelProperty().get().select(newEmployee);
     }
 
+    // Function to manage export logic
     @FXML
     void exportData(ActionEvent event){
         String selectedFormat = formatCombobox.getValue();
@@ -229,9 +223,11 @@ public class Controller {
         }
     }
 
+    // Function to import csv through import button
     @FXML
     void importData(ActionEvent event){ 
         
+        // Create file chooser
         FileChooser csvChooser = new FileChooser();
         FileChooser.ExtensionFilter csvFilter = new FileChooser.ExtensionFilter("Archivos CSV", "*.csv");
         Stage mainStage = (Stage) fullNameField.getScene().getWindow();
@@ -239,9 +235,10 @@ public class Controller {
         csvChooser.setTitle("Importar CSV");
         csvChooser.getExtensionFilters().add(csvFilter);
         csvChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
-        File selectionFile = csvChooser.showOpenDialog(mainStage);
+        File selectionFile = csvChooser.showOpenDialog(mainStage); // Get file
 
         if (selectionFile != null) {
+            // Clear registries and import file
             Employee selected = regListView.getSelectionModel().getSelectedItem();
             if(selected != null){
                 fullNameField.setText("Nombre y Apellido");
@@ -260,8 +257,10 @@ public class Controller {
         
     }
 
+    // Initialize program
     public void initialize(){
 
+        // Listener to keep idSet updated
         employees.addListener((ListChangeListener<Employee>) change -> {
             while (change.next()) {
                 if(change.wasAdded()) {
@@ -282,11 +281,12 @@ public class Controller {
             }
         } );
 
+        // Init combobox and listener to enable/disble fields
         typeComboBox.getItems().addAll(typeItems);
         typeComboBox.setValue("Employee");
 
         typeComboBox.getSelectionModel().selectedItemProperty().addListener(
-            (ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            (ObservableValue<? extends String> _, String _, String newValue) -> {
                 if (newValue.equals("Employee")) {
                     titleField.setEditable(false);
                     titleField.setDisable(true);
@@ -303,16 +303,16 @@ public class Controller {
             }
         );
 
+        // Init comboboxes
         formatCombobox.getItems().addAll(formatItems);
         formatCombobox.setValue("CSV");
-
-
 
         orderComboBox.getItems().addAll(orderItems);
         orderComboBox.setValue("Default");
 
+        // Listener to sort registers
         orderComboBox.getSelectionModel().selectedItemProperty().addListener(
-            (ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            (ObservableValue<? extends String> _, String _, String newValue) -> {
                 if(newValue.equals("Lastname")) 
                     SortManager.sortByLastname(); 
                 else if(newValue.equals("Salary")) 
@@ -322,15 +322,19 @@ public class Controller {
             }
         );
  
+
         if (comissionField != null) {
             comissionField.setEditable(false);
         }
 
+        // Initial import
         ExportManager.importCSV("employeesData.csv");
         regListView.setItems(employees);
 
+        // Init id observer
         GUIObservers.idObserver(this, regListView);
 
+        // Disable all fields for start
         typeComboBox.setDisable(true);
         idField.setDisable(true);
         nameField.setDisable(true);
@@ -348,6 +352,7 @@ public class Controller {
                 public void changed(ObservableValue<? extends Employee> ov,Employee oldValue, Employee newValue){ 
                     if (newValue != null) {
 
+                        // Enable fields
                         typeComboBox.setDisable(false);
                         idField.setDisable(false);
                         nameField.setDisable(false);
@@ -355,6 +360,7 @@ public class Controller {
                         salaryField.setDisable(false);
                         datePicker.setDisable(false);
 
+                        // Fill fields
                         fullNameField.setText(newValue.getName() + " " + newValue.getLastname());             
                         idField.setText(String.valueOf(newValue.getId()));
                         nameField.setText(newValue.getName());
@@ -367,6 +373,7 @@ public class Controller {
                                                         Integer.parseInt(dateParts[2]));
                         datePicker.setValue(hireDate);
                     
+                        // Enable/disable according to class
                         if(newValue.getClass() == Manager.class){
                             titleField.setDisable(false);
                             comissionField.setDisable(false);
@@ -383,6 +390,7 @@ public class Controller {
                         }
                     }
                     else {
+                        // Disable fields if null selection
                         typeComboBox.setDisable(true);
                         idField.setDisable(true);
                         nameField.setDisable(true);
@@ -397,7 +405,8 @@ public class Controller {
             }
         );  
 
-        regListView.setCellFactory(lv -> new ListCell<Employee>() {
+        // Cell factory for cells in listview
+        regListView.setCellFactory(_ -> new ListCell<Employee>() {
             @Override
             protected void updateItem(Employee item, boolean empty){
                 super.updateItem(item, empty);
