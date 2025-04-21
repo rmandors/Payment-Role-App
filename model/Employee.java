@@ -40,7 +40,7 @@ public class Employee implements Comparable<Employee>{
         if(i > 0 && i < 10000)
             id.set(i);
         else
-            throw new IllegalArgumentException("Invalid ID. Must be beetween: 1-9999!");
+            throw new IllegalArgumentException("ID inválido. Su valor debe estar entre: 1-9999!");
     }
 
     @XmlElement(name="id")
@@ -52,7 +52,7 @@ public class Employee implements Comparable<Employee>{
         if(n.length() > 0)
             name = n;
         else
-            throw new IllegalArgumentException("Invalid Name length!");
+            throw new IllegalArgumentException("Nombre inválido!");
     }
 
     @XmlElement(name="name")
@@ -64,7 +64,7 @@ public class Employee implements Comparable<Employee>{
         if(ln.length() > 0)
             lastname = ln;
         else
-            throw new IllegalArgumentException("Invalid Lastname length!");
+            throw new IllegalArgumentException("Apellido inválido!");
     }
 
     @XmlElement(name="lastname")
@@ -73,10 +73,10 @@ public class Employee implements Comparable<Employee>{
     }
 
     public void setHireDate(Date hd){
-        if(hd.getYear() > 1900)
+        if(hd.getYear() > 1975)
             hireDate = hd;
         else
-            throw new IllegalArgumentException("Invalid Hire Date!");
+            throw new IllegalArgumentException("Fecha de contratación inválida!");
     }
 
     @XmlElement(name="hireDate")
@@ -94,7 +94,7 @@ public class Employee implements Comparable<Employee>{
         if(s >= 800 && s <= 3500)
             salary = s;
         else
-            throw new IllegalArgumentException("Invalid Salary. Must be beetween: 800-3500!");
+            throw new IllegalArgumentException("Salario inválido. Su valor debe estar entre: 800-3500!");
     }
 
     public IntegerProperty idProperty() {
