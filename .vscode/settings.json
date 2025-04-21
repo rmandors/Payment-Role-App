@@ -8,6 +8,22 @@
         "c:\\Java\\javafx-sdk-23.0.2\\lib\\javafx.media.jar",
         "c:\\Java\\javafx-sdk-23.0.2\\lib\\javafx.swing.jar",
         "c:\\Java\\javafx-sdk-23.0.2\\lib\\javafx.web.jar",
-        "c:\\Java\\javafx-sdk-23.0.2\\lib\\javafx-swt.jar"
+        "c:\\Java\\javafx-sdk-23.0.2\\lib\\javafx-swt.jar",
+        "c:\\Java\\jaxb-ri\\mod\\codemodel.jar",
+        "c:\\Java\\jaxb-ri\\mod\\dtd-parser.jar",
+        "c:\\Java\\jaxb-ri\\mod\\FastInfoset.jar",
+        "c:\\Java\\jaxb-ri\\mod\\istack-commons-runtime.jar",
+        "c:\\Java\\jaxb-ri\\mod\\istack-commons-tools.jar",
+        "c:\\Java\\jaxb-ri\\mod\\javax.activation-api.jar",
+        "c:\\Java\\jaxb-ri\\mod\\jaxb-api.jar",
+        "c:\\Java\\jaxb-ri\\mod\\jaxb-jxc.jar",
+        "c:\\Java\\jaxb-ri\\mod\\jaxb-runtime.jar",
+        "c:\\Java\\jaxb-ri\\mod\\jaxb-xjc.jar",
+        "c:\\Java\\jaxb-ri\\mod\\relaxng-datatype.jar",
+        "c:\\Java\\jaxb-ri\\mod\\rngom.jar",
+        "c:\\Java\\jaxb-ri\\mod\\stax-ex.jar",
+        "c:\\Java\\jaxb-ri\\mod\\txw2.jar",
+        "c:\\Java\\jaxb-ri\\mod\\xsom.jar",
+        "c:\\Java\\json-simple-master\\json-simple-1.1.1.jar"
     ]
 }
