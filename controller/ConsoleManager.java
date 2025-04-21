@@ -9,7 +9,7 @@ public class ConsoleManager {
     
     static void exportToConsole(){
         System.out.println("\nListado de Empleados:");
-        for (int i = 0; i < Controller.employees.size(); i++) {
+        for(int i = 0; i < Controller.employees.size(); i++){
             System.out.println(Controller.employees.get(i).toString());
         }
         return;
