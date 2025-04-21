@@ -45,7 +45,7 @@ public class CalcManager {
     }
 
     // Converts salary integer to words
-    static String salaryToString(int salary) {   
+    static String salaryToString(int salary){   
         String[] units = {"", "uno", "dos", "tres", "cuatro", "cinco", "seis",
                           "siete", "ocho", "nueve"};
 
@@ -59,7 +59,7 @@ public class CalcManager {
                              "quinientos", "seiscientos", "setecientos", "ochocientos", 
                              "novecientos"};
     
-        String words = "";
+        String salaryString = "";
 
         if(salary == 0) return "cero";
     
@@ -68,9 +68,9 @@ public class CalcManager {
             int thousandPart = salary / 1000;
             
             if (thousandPart == 1)
-                words += "mil ";            
+                salaryString += "mil ";            
             else 
-                words += salaryToString(thousandPart) + " mil ";
+                salaryString += salaryToString(thousandPart) + " mil ";
             
             salary %= 1000;
         }
@@ -79,28 +79,26 @@ public class CalcManager {
         if(salary >= 100){
             int hundredPart = salary / 100;
             
-            if (hundredPart == 1 && salary % 100 == 0) 
-                words += "cien ";
+            if(hundredPart == 1 && salary % 100 == 0) 
+                salaryString += "cien ";
             else 
-                words += hundreds[hundredPart] + " ";
-
+                salaryString += hundreds[hundredPart] + " ";
             salary %= 100;
         }
     
         // Tens and Units 
         if(salary >= 20){
             int tenPart = salary / 10;
-            words += tens[tenPart];
+            salaryString += tens[tenPart];
             
-            if (salary % 10 != 0) 
-                words += " y " + units[salary % 10];
+            if(salary % 10 != 0) 
+                salaryString += " y " + units[salary % 10];
         } 
         else if(salary >= 10) 
-            words += teens[salary - 10];
-        else if (salary > 0) 
-            words += units[salary];
+            salaryString += teens[salary - 10];
+        else if(salary > 0) 
+            salaryString += units[salary];
             
-        return words.trim();
+        return salaryString.trim();
     }
 }
-

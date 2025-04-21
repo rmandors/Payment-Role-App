@@ -21,15 +21,14 @@ public class ConsoleManager {
 
     // Search and print by id
     static void searchForUserId(){
-        System.out.print("Introduzca el ID del empleado que desea buscar: ");
+        System.out.print("\nIntroduzca el ID del empleado que desea buscar: ");
 
-        int id = Integer.parseInt(scanner.nextLine());
+        int id = Integer.parseInt(scanner.next());
         boolean found = false;
         int index = -1;
 
         for(int i = 0; i < Controller.employees.size(); i++) {
             if (Controller.employees.get(i).getId() == id) {
-                //System.out.println(Controller.employees.get(i).toString());
                 found = true;
                 index = i;
                 break;

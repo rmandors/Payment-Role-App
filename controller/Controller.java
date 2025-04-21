@@ -99,7 +99,8 @@ public class Controller {
     void deleteReg(ActionEvent event) {
 
         if (regListView.getSelectionModel().getSelectedItem() == null) return;
-        boolean confirm = AlertManager.showConfirmation("Eliminar Registro", "¿Estás seguro que deseas eliminar este registro?");
+        boolean confirm = AlertManager.showConfirmation("Eliminar Registro",
+                                                "¿Estás seguro que deseas eliminar este registro?");
 
         if(confirm){
             // Delete the selected employee
@@ -155,7 +156,8 @@ public class Controller {
                         SortManager.sortBySalary();
                     else if(orderComboBox.getValue().equals("Hire Date"))
                         SortManager.sortByHireDate();
-                    AlertManager.showInformation("Información Actualizada!","Información actualizada correctamente.");
+                    AlertManager.showInformation("Información Actualizada!",
+                                         "Información actualizada correctamente.");
                     regListView.refresh();
                 }
                 catch(IllegalArgumentException e){
@@ -165,7 +167,8 @@ public class Controller {
             }
             else if (typeComboBox.getValue().equals("Manager")) {
                 try {
-                    Manager updatedReg = new Manager(selected.getId(), selected.getName(), selected.getLastname(), selected.getDate(), selected.getSalary(), titleField.getText());
+                    Manager updatedReg = new Manager(selected.getId(), selected.getName(), selected.getLastname(), 
+                                                     selected.getDate(), selected.getSalary(), titleField.getText());
                     int index = employees.indexOf(selected);
                     employees.remove(selected);
                     employees.add(index, updatedReg);
@@ -177,7 +180,8 @@ public class Controller {
             }
             else if (typeComboBox.getValue().equals("Employee")) {
                 try {
-                    Employee updatedReg = new Employee(selected.getId(), selected.getName(), selected.getLastname(), selected.getDate(), selected.getSalary());
+                    Employee updatedReg = new Employee(selected.getId(), selected.getName(), selected.getLastname(),
+                                                       selected.getDate(), selected.getSalary());
                     int index = employees.indexOf(selected);
                     employees.remove(selected);
                     employees.add(index, updatedReg);
@@ -201,8 +205,9 @@ public class Controller {
                 counter++;
                 newRegCounter++;
             }
-            if (counter > 10000) {
-                AlertManager.showWarning("Error Fatal!", "Número máximo de IDs alcanzados, elimina los registros anteriores antes de crear uno nuevo");
+            if (counter > 9999) {
+                AlertManager.showWarning("Error Fatal!", 
+                                        "Número máximo de IDs alcanzados, elimina los registros previos antes de crear uno nuevo");
                 return;                
             }
         }
@@ -327,6 +332,8 @@ public class Controller {
         formatCombobox.getItems().addAll(formatItems);
         formatCombobox.setValue("CSV");
 
+
+
         orderComboBox.getItems().addAll(orderItems);
         orderComboBox.setValue("Default");
 
@@ -358,6 +365,7 @@ public class Controller {
         datePicker.setDisable(true);
         titleField.setDisable(true);
         comissionField.setDisable(true);
+
 
         // Update text fields when selecting an employee
         regListView.getSelectionModel().selectedItemProperty().addListener(
@@ -428,3 +436,10 @@ public class Controller {
     }
 
 }
+
+    
+    
+
+
+
+
