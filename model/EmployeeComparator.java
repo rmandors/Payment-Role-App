@@ -3,6 +3,7 @@ import java.util.Comparator;
 
 public class EmployeeComparator implements Comparator<Employee>{
     
+    // Comparator of class employee
     public int compare(Employee e1, Employee e2){
     int comparison = e1.getLastname().compareTo(e2.getLastname());
 

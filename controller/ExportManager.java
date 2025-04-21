@@ -74,7 +74,7 @@ public class ExportManager {
         }
     }
 
-    // Exports IESS to 
+    // Exports IESS table to text file
     static void exportFinalReport(String filename){
         try(Formatter output = new Formatter(new File(filename))){
             SortManager.sortByLastname();
@@ -95,6 +95,8 @@ public class ExportManager {
                               s.getName(), s.getLastname(), CalcManager.calcIESS(totalSalary), CalcManager.calcImpRent(totalSalary), 
                               CalcManager.calcLiquidSalary(totalSalary), CalcManager.salaryToString(CalcManager.calcLiquidSalary(totalSalary)));
             }
+
+            AlertManager.showInformation("Archivo creado!", "El archivo de texto ha sido exportado correctamente.");
 
         }
         catch(IOException e){
@@ -123,7 +125,7 @@ public class ExportManager {
     }
 
     
-    // Reads the Employee data from a CSV file and load it into an ObservableList
+    // Reads the Employee data from a CSV file and load it into an ObservableList. Runs at the start of the program
     static void importCSV(String fileName){
         try(BufferedReader reader = new BufferedReader(new FileReader(fileName))){
             String line;
@@ -152,7 +154,6 @@ public class ExportManager {
                     employee = new Manager(id, name, lastname, hireDate, salary, educationLevel);
                 
                 Controller.employees.add(employee);
-                //AlertManager.showInformation("Registros importados!", "Se ha importado el archivo CSV correctamente.");                
             }
         } 
         catch(IOException e){
@@ -160,6 +161,7 @@ public class ExportManager {
         }
     }
 
+    // Reads the Employee data from a CSV file and load it into an ObservableList. Runs when import button pressed
     static void importCSV(File fileName){
         try(BufferedReader reader = new BufferedReader(new FileReader(fileName))){
             String line;

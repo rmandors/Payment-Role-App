@@ -14,6 +14,8 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 @XmlSeeAlso({Manager.class})
 public class EmployeeList{
 
+    // List of employees for JAXB use
+
     @XmlElements({
         @XmlElement(name="employee", type=Employee.class),
         @XmlElement(name="manager", type=Manager.class)

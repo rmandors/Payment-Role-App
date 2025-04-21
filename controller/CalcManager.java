@@ -2,11 +2,13 @@ package controller;
 
 public class CalcManager {
 
+    // Calculates IESS contribution
     static int calcIESS(float totalSalary){
         float iess = totalSalary * 0.0945f;
         return Math.round(iess);
     }
 
+    // Calculates taxes
     static int calcImpRent(float totalSalary){
         float impRent = 0;
         float anualSalary = totalSalary * 12;
@@ -36,11 +38,13 @@ public class CalcManager {
         return Math.round(impRent);
     }
 
+    // Calculates net salary
     static int calcLiquidSalary(float totalSalary){
         return Math.round(totalSalary 
                           - calcIESS(totalSalary) - calcImpRent(totalSalary));
     }
 
+    // Converts salary integer to words
     static String salaryToString(int salary) {   
         String[] units = {"", "uno", "dos", "tres", "cuatro", "cinco", "seis",
                           "siete", "ocho", "nueve"};

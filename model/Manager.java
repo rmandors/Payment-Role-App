@@ -12,17 +12,23 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.PROPERTY)
 
 public class Manager extends Employee {
+
+    // Atributes
     private String educationLevel;
     private final float commissionRate = 0.05f;
 
+    // Default constructor
     public Manager(){
         super();
     }
 
+    // Constructor
     public Manager(int i, String n, String ln, Date hd, float s, String el){
         super(i, n, ln, hd, s);
         setEducationLevel(el);
     }
+
+    // Setters and getters
 
     public void setEducationLevel(String el){
         if(el.length() > 0)
@@ -40,12 +46,14 @@ public class Manager extends Employee {
         return Math.round(getSalary() * commissionRate * 100) / 100f;
     }
 
+    // toString method
     @Override 
     public String toString(){
         return super.toString().replace("]", "") 
                + ", " + "Education Level: " + getEducationLevel() + "]";
     }
 
+    // Comparable
     @Override
     public int compareTo(Employee right){
         float totalPayment = getSalary() + getCommission(); ;

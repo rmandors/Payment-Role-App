@@ -18,16 +18,19 @@ import javafx.beans.property.SimpleIntegerProperty;
 @XmlSeeAlso(Manager.class)
 public class Employee implements Comparable<Employee>{
     
+    // Properties
     @XmlTransient
     private IntegerProperty id = new SimpleIntegerProperty();
 
+    // Atributes
     private String name;
     private String lastname;
     private Date hireDate;
     private float salary;
     
-    public Employee(){}
+    public Employee(){} // Default constructor
 
+    // Constructor
     public Employee(int i, String n, String ln, Date hd, float s){
         setId(i);
         setName(n);
@@ -35,6 +38,8 @@ public class Employee implements Comparable<Employee>{
         setHireDate(hd);
         setSalary(s);
     }
+
+    // Setters and getters
 
     public void setId(int i){
         if(i > 0 && i < 10000)
@@ -106,6 +111,7 @@ public class Employee implements Comparable<Employee>{
         return salary;
     }
 
+    // toString method
     @Override
     public String toString(){
         return "[ID: " + getId() + ", " +
@@ -115,6 +121,7 @@ public class Employee implements Comparable<Employee>{
                "Salary: " + getSalary() + "]";
     }
 
+    // Equality and comparable
     @Override
     public boolean equals(Object obj){
         if (this == obj)

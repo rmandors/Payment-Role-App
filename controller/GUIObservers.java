@@ -8,6 +8,7 @@ import model.Employee;
 
 public class GUIObservers {
 
+    // Initializes idField observer, checks if id is valid
     static void idObserver(Controller controller, ListView<Employee> listView) {
 
         controller.idField.focusedProperty().addListener((_,_,newValue) -> {
