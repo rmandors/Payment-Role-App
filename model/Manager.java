@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;  
 import javax.xml.bind.annotation.XmlRootElement;  
 
-@XmlRootElement
+@XmlRootElement(name="manager")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Manager extends Employee {
     private String educationLevel;
