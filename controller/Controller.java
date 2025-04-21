@@ -327,8 +327,6 @@ public class Controller {
         formatCombobox.getItems().addAll(formatItems);
         formatCombobox.setValue("CSV");
 
-
-
         orderComboBox.getItems().addAll(orderItems);
         orderComboBox.setValue("Default");
 
@@ -360,7 +358,6 @@ public class Controller {
         datePicker.setDisable(true);
         titleField.setDisable(true);
         comissionField.setDisable(true);
-
 
         // Update text fields when selecting an employee
         regListView.getSelectionModel().selectedItemProperty().addListener(
