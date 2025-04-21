@@ -43,6 +43,9 @@ public class ConsoleManager {
                 System.out.printf("%-4s | %-10s | %-10s | %-4s | %-10s | %-10s%n", 
                                  "ID", "Nombre", "Apellido", "IESS", "Imp. Renta", "Liquido");
 
+                String separator = String.format("%95s", "").replace(" ", "-");
+                System.out.printf("%s%n", separator);
+
                 if(s.getClass() == Manager.class)
                     totalSalary = s.getSalary() + ((Manager)s).getCommission();
                 else
