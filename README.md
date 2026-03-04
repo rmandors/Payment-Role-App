@@ -7,7 +7,7 @@ Permite cargar datos de empleados, realizar cálculos de salario, ordenar y filt
 
 ### Captura de pantalla
 
-![PaymentRole - Vista principal](<img width="599" height="427" alt="Screenshot 2026-03-04 at 9 25 16 AM" src="https://github.com/user-attachments/assets/af9074c9-df49-4ee5-9ff4-be24ffda3f5d" />)
+<img width="500" alt="Screenshot 2026-03-04 at 9 25 16 AM" src="https://github.com/user-attachments/assets/af9074c9-df49-4ee5-9ff4-be24ffda3f5d" />
 
 ---
 
